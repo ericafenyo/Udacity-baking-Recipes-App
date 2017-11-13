@@ -14,30 +14,26 @@
  * limitations under the License.
  */
 
-package com.example.eric.bakingrecipes.Ui;
+package com.example.eric.bakingrecipes.Activities;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.eric.bakingrecipes.Adapters.MasterListAdapter;
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesModel;
+import com.example.eric.bakingrecipes.Fragments.DetailsFragment;
 
-import java.util.List;
+public class DetailsActivity extends AppCompatActivity{
 
-public class MainActivity extends AppCompatActivity implements MasterListAdapter.onItemSelectListener{
-    private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
-    private static final String EXTRA_STEPS = "EXTRA_STEPS";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_detail);
 
-    }
-
-    @Override
-    public void onItemClick(int position, List<RecipesModel> recipes) {
-
-
+        DetailsFragment detailListFragment = new DetailsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+//                .add(R.id.frame_detail_fragment,detailListFragment)
+                .commit();
     }
 }

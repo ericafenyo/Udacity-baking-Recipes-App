@@ -19,7 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.eric.bakingrecipes.Ui.DetailActivity">
+    tools:context="com.example.eric.bakingrecipes.Activities.DetailsActivity">
 
     <!--TODO: comment on this-->
 

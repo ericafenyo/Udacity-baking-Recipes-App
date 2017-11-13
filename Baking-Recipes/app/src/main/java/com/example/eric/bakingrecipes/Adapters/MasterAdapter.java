@@ -20,18 +20,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.volley.Response;
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.RecipesModel;
-
-import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,13 +41,13 @@ import butterknife.ButterKnife;
  * TODO: change description;
  */
 
-public class MasterListAdapter extends RecyclerView.Adapter<MasterListAdapter.RecipesViewHolder>{
+public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.RecipesViewHolder>{
     static String videoPath = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4";
     private Context context;
     private List<RecipesModel> mData;
     private onItemSelectListener onItemClickListener;
 
-    public MasterListAdapter(Context context, List<RecipesModel> mData, onItemSelectListener onItemClickListener) {
+    public MasterAdapter(Context context, List<RecipesModel> mData, onItemSelectListener onItemClickListener) {
         this.context = context;
         this.mData = mData;
         this.onItemClickListener = onItemClickListener;

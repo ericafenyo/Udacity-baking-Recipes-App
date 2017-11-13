@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.eric.bakingrecipes.Ui;
+package com.example.eric.bakingrecipes.Fragments;
 
 import android.graphics.BitmapFactory;
 import android.net.Uri;

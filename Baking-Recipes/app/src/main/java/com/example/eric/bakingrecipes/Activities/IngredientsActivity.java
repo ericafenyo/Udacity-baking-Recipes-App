@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-package com.example.eric.bakingrecipes.Ui;
+package com.example.eric.bakingrecipes.Activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.eric.bakingrecipes.R;
 
-public class DetailActivity extends AppCompatActivity{
-
+public class IngredientsActivity extends AppCompatActivity {
+    private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_ingredients);
 
-        DetailListFragment detailListFragment = new DetailListFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.frame_detail_fragment,detailListFragment)
-                .commit();
+
     }
 }

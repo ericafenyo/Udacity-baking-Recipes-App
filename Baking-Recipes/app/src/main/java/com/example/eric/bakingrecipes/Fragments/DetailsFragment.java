@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.eric.bakingrecipes.Ui;
+package com.example.eric.bakingrecipes.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +32,7 @@ import com.example.eric.bakingrecipes.Adapters.StepsAdapter;
 import com.example.eric.bakingrecipes.PlayerActivity;
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.RecipesModel;
+import com.example.eric.bakingrecipes.Activities.IngredientsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ import butterknife.ButterKnife;
  *
  */
 
-public class DetailListFragment extends Fragment {
+public class DetailsFragment extends Fragment {
     private static final String EXTRA_STEPS = "EXTRA_STEPS";
     private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
     private static final String VIDEO_URL = "VIDEO_URL";
@@ -57,8 +58,16 @@ public class DetailListFragment extends Fragment {
     @BindView(R.id.card_ingredients_button_wrapper)CardView ingredientButton;
     @BindView(R.id.recyclerView_detail_steps)RecyclerView recyclerView;
 
+    public static DetailsFragment newFragment(List<RecipesModel> recipeData) {
+        DetailsFragment fragment = new DetailsFragment();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(EXTRA_STEPS, (ArrayList<? extends Parcelable>) recipeData);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     //Constructor
-    public DetailListFragment() {
+    public DetailsFragment() {
         //should be empty
     }
 
@@ -120,7 +129,7 @@ public class DetailListFragment extends Fragment {
     };
 
     /**
-     * gets intent data from MasterListFragment
+     * gets intent data from MasterFragment
      * */
     private void getParcelableExtra() {
 

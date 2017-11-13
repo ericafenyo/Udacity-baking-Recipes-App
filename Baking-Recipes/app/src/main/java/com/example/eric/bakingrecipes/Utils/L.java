@@ -28,12 +28,12 @@ import android.widget.Toast;
 
 public final class L {
     
-    public static void toast(Context context, String message){
-        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    public static void toast(Context context, Object message){
+        Toast.makeText(context,String.valueOf(message),Toast.LENGTH_SHORT).show();
     }
 
-    public static void log(String message){
-        Log.v("MyTAG",message);
-
+    public static void log(Object message){
+        Log.i("Response from L",String.valueOf(message));
     }
+
 }

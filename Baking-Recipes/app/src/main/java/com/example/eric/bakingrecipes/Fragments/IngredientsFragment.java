@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.eric.bakingrecipes.Ui;
+package com.example.eric.bakingrecipes.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -40,7 +40,7 @@ import butterknife.ButterKnife;
  * Created by eric on 08/11/2017.
  */
 
-public class IngredientsListFragment extends Fragment {
+public class IngredientsFragment extends Fragment {
 
     private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
     LinearLayoutManager layoutManager;
@@ -49,7 +49,7 @@ public class IngredientsListFragment extends Fragment {
     @BindView(R.id.recyclerView_fragment_ingredients_list)
     RecyclerView mRecyclerView;
 
-    public IngredientsListFragment() {
+    public IngredientsFragment() {
     }
 
     @Nullable

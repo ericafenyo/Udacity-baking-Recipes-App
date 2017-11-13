@@ -35,6 +35,7 @@ public class RecipesModel implements Parcelable{
 
     //Constructors
     public RecipesModel() {
+        //should be empty
     }
 
     public RecipesModel(int id, String name, int servings, List<Ingredients> ingredients, List<Steps> steps) {
