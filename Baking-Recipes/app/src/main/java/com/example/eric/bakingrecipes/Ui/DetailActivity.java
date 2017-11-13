@@ -16,50 +16,23 @@
 
 package com.example.eric.bakingrecipes.Ui;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
-import com.example.eric.bakingrecipes.Adapters.StepsAdapter;
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesModel;
 
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class DetailActivity extends AppCompatActivity implements StepsAdapter.onItemSelectListener {
-
-    private String EXTRA_STEPS = "EXTRA_STEPS";
-
-    LinearLayoutManager layoutManager;
-    StepsAdapter adapter;
-
-    @BindView(R.id.recyclerView_detail_steps) RecyclerView recyclerView;
+public class DetailActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        ButterKnife.bind(this);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null){
-           List<RecipesModel.Steps> steps = bundle.getParcelableArrayList(EXTRA_STEPS);
-           adapter = new StepsAdapter(this,steps,this);
-
-        }
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onItemClick(int position, List<RecipesModel.Steps> steps) {
-        Log.i("Detail Position", String.valueOf(position));
+        DetailListFragment detailListFragment = new DetailListFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.frame_detail_fragment,detailListFragment)
+                .commit();
     }
 }

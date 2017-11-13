@@ -20,14 +20,18 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.Response;
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.RecipesModel;
+
+import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,26 +45,25 @@ import butterknife.ButterKnife;
  * TODO: change description;
  */
 
-public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesViewHolder>{
+public class MasterListAdapter extends RecyclerView.Adapter<MasterListAdapter.RecipesViewHolder>{
     static String videoPath = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4";
-    private List<RecipesModel> mData;
     private Context context;
+    private List<RecipesModel> mData;
     private onItemSelectListener onItemClickListener;
 
-    public RecipesAdapter(List<RecipesModel> mData, Context context, RecipesAdapter.onItemSelectListener onItemSelectListener) {
-        this.mData = mData;
+    public MasterListAdapter(Context context, List<RecipesModel> mData, onItemSelectListener onItemClickListener) {
         this.context = context;
-        this.onItemClickListener = onItemSelectListener;
+        this.mData = mData;
+        this.onItemClickListener = onItemClickListener;
     }
 
     public interface onItemSelectListener{
         void onItemClick(int position,List<RecipesModel> recipes);
-        void onViewClick(int position, List<RecipesModel> recipes, View view);
     }
 
     @Override
     public RecipesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_recipes_main,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recipes_main,parent,false);
         return new RecipesViewHolder(view);
     }
 
@@ -89,8 +92,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
         public void onClick(View view) {
             int position = getAdapterPosition();
             onItemClickListener.onItemClick(position,mData);
-            onItemClickListener.onViewClick(position,mData,itemView);
-
         }
     }
 

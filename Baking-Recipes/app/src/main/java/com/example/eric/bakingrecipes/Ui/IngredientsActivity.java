@@ -19,24 +19,14 @@ package com.example.eric.bakingrecipes.Ui;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.eric.bakingrecipes.Adapters.MasterListAdapter;
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesModel;
 
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements MasterListAdapter.onItemSelectListener{
+public class IngredientsActivity extends AppCompatActivity {
     private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
-    private static final String EXTRA_STEPS = "EXTRA_STEPS";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-    }
-
-    @Override
-    public void onItemClick(int position, List<RecipesModel> recipes) {
+        setContentView(R.layout.activity_ingredients);
 
 
     }

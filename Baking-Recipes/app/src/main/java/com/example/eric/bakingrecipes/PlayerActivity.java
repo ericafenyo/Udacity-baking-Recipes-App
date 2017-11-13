@@ -14,30 +14,16 @@
  * limitations under the License.
  */
 
-package com.example.eric.bakingrecipes.Ui;
+package com.example.eric.bakingrecipes;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
-import com.example.eric.bakingrecipes.Adapters.MasterListAdapter;
-import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesModel;
+public class PlayerActivity extends AppCompatActivity {
 
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements MasterListAdapter.onItemSelectListener{
-    private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
-    private static final String EXTRA_STEPS = "EXTRA_STEPS";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-    }
-
-    @Override
-    public void onItemClick(int position, List<RecipesModel> recipes) {
-
-
+        setContentView(R.layout.activity_player);
     }
 }

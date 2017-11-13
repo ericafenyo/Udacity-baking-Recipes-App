@@ -82,13 +82,14 @@ public class RecipesModel implements Parcelable{
 
     } //End of RecipesModel Parcelable
 
-    /**Ingredients InnerClass*/
+    /**Ingredient InnerClass*/
     public static class Ingredients implements Parcelable{
         private double quantity;
         private String measure;
         private String ingredient;
 
-        //Ingredients Parcelable
+        //Ingredient Parcelable
+
         protected Ingredients(Parcel in) {
             quantity = in.readDouble();
             measure = in.readString();
@@ -105,22 +106,9 @@ public class RecipesModel implements Parcelable{
             public Ingredients[] newArray(int size) {
                 return new Ingredients[size];
             }
-        };
+        }; //End of Ingredient Parcelable
 
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel parcel, int i) {
-            parcel.writeDouble(quantity);
-            parcel.writeString(measure);
-            parcel.writeString(ingredient);
-        } //End of Ingredients Parcelable
-
-        //Ingredients Getters
+        //Ingredient  Getters
         public double getQuantity() {
             return quantity;
         }
@@ -132,9 +120,21 @@ public class RecipesModel implements Parcelable{
         public String getIngredient() {
             return ingredient;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeDouble(quantity);
+            parcel.writeString(measure);
+            parcel.writeString(ingredient);
+        }
     }
 
-    /**Steps InnerClass*/
+/**Steps InnerClass*/
     public static class Steps implements Parcelable{
         private int id;
         private String shortDescription;
@@ -212,7 +212,7 @@ public class RecipesModel implements Parcelable{
         return servings;
     }
 
-    public List<Ingredients> getIngredients() {
+    public List<RecipesModel.Ingredients> getIngredients() {
         return ingredients;
     }
 
