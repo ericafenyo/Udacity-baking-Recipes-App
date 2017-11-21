@@ -18,10 +18,10 @@ package com.example.eric.bakingrecipes.Activities;
 
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -31,7 +31,7 @@ import com.example.eric.bakingrecipes.Adapters.MasterAdapter;
 import com.example.eric.bakingrecipes.BuildConfig;
 import com.example.eric.bakingrecipes.Fragments.MasterFragment;
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
 import com.example.eric.bakingrecipes.Utils.MySingleton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -49,32 +49,41 @@ public class MasterActivity extends AppCompatActivity {
 
     private LinearLayoutManager mLayoutManager;
     private MasterAdapter mAdapter;
-    private List<RecipesModel> mRecipes = new ArrayList<>();
+    private List<RecipesModel> mRecipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master);
+        Toolbar toolbar = findViewById(R.id.toolbar_master);
+        if (toolbar != null){
+            setSupportActionBar(toolbar);
+        }
+
+
 
         //checks to see if recipes data is saved into bundle before making network call. This minimizes internet usage
         if (savedInstanceState != null) {
             mRecipes = savedInstanceState.getParcelableArrayList(BUNDLED_RECIPES);
             //fragment initiation using a custom factory method declared in the fragment
             MasterFragment fragment = MasterFragment.newFragment(mRecipes);
+
             //inflates the fragment in the activity
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
-                    .add(R.id.frame_master_container, fragment)
+                    .replace(R.id.frame_master_container, fragment)
                     .commit();
         } else {
             //requests and parse Recipes Json from the Net
             loadJson();
-        }
-    }//end of onCreate
+        }//end of onCreate
+
+    }
+
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(BUNDLED_RECIPES, (ArrayList<? extends Parcelable>) mRecipes);
     }
 
@@ -92,6 +101,9 @@ public class MasterActivity extends AppCompatActivity {
 
                 //returns JsonArrayList of RecipesModel
                 mRecipes = parseJson(response);
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(BUNDLED_RECIPES, (ArrayList<? extends Parcelable>) mRecipes);
 
                 //fragment initiation using a custom factory method declared in the fragment
                 MasterFragment fragment = MasterFragment.newFragment(mRecipes);
@@ -113,10 +125,12 @@ public class MasterActivity extends AppCompatActivity {
 
         //add arrayRequest to RequestQueue
         MySingleton.getInstance(this).addToRequestQueue(arrayRequest);
+
     }
 
     /**
      * uses Google Gson to convert the "response" to objects from their corresponding key:value pairs
+     *
      * @param response the recipes JsonArray results from the network call
      * @return List of Recipes using a schema from the RecipeModel
      */

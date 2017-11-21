@@ -21,18 +21,19 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.example.eric.bakingrecipes.Adapters.StepsAdapter;
-import com.example.eric.bakingrecipes.PlayerActivity;
-import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesModel;
 import com.example.eric.bakingrecipes.Activities.IngredientsActivity;
+import com.example.eric.bakingrecipes.Adapters.StepsAdapter;
+import com.example.eric.bakingrecipes.PlayerActivityPhone;
+import com.example.eric.bakingrecipes.R;
+import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,6 @@ import butterknife.ButterKnife;
 
 /**
  * Created by eric on 08/11/2017.
- *
  */
 
 public class DetailsFragment extends Fragment {
@@ -51,17 +51,31 @@ public class DetailsFragment extends Fragment {
     private static final String VIDEO_URL = "VIDEO_URL";
     private static final String SHORT_DESCRIPTION = "SHORT_DESCRIPTION";
     private static final String DESCRIPTION = "DESCRIPTION";
+    private static final String BUNDLED_STEPS = "BUNDLED_STEPS";
+    private static final String BUNDLED_INGREDIENTS = "BUNDLED_INGREDIENTS";
+    private static final String POSITION = "POSITION";
 
-    LinearLayoutManager layoutManager;
-    StepsAdapter adapter;
+    @BindView(R.id.button_ingredients_list_launcher)
+    TextView ingredientButton;
+    @BindView(R.id.recyclerView_detail_steps)
+    RecyclerView recyclerView;
 
-    @BindView(R.id.card_ingredients_button_wrapper)CardView ingredientButton;
-    @BindView(R.id.recyclerView_detail_steps)RecyclerView recyclerView;
+    private StepsAdapter mAdapter;
+    private List<RecipesModel.Steps> mSteps = new ArrayList<>();
+    private List<RecipesModel.Ingredients> mIngredients = new ArrayList<>();
+    private LinearLayoutManager mLayoutManager;
 
-    public static DetailsFragment newFragment(List<RecipesModel> recipeData) {
+
+    /**
+     * creates new DetailsFragment which makes data available within the fragment through bundle
+     * @param stepsData List of recipes steps data from the jsonArray response
+     * @return new Instance of  DetailsFragment
+     */
+    public static DetailsFragment newFragment(List<RecipesModel.Steps> stepsData, List<RecipesModel.Ingredients> ingredientsData) {
         DetailsFragment fragment = new DetailsFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(EXTRA_STEPS, (ArrayList<? extends Parcelable>) recipeData);
+        args.putParcelableArrayList(BUNDLED_STEPS, (ArrayList<? extends Parcelable>) stepsData);
+        args.putParcelableArrayList(BUNDLED_INGREDIENTS, (ArrayList<? extends Parcelable>) ingredientsData);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,73 +88,96 @@ public class DetailsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail_list,container,false);
+        View view = inflater.inflate(R.layout.fragment_detail_list, container, false);
+        ButterKnife.bind(this, view);
 
-        //Bind views
-        ButterKnife.bind(this,view);
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+            //retrieves data from the bundle
+            mSteps = bundle.getParcelableArrayList(EXTRA_STEPS);
+            mIngredients = bundle.getParcelableArrayList(EXTRA_INGREDIENTS);
 
-        ingredientButton.setOnClickListener(clickListener);
+            //specifying an Adapter
+            mAdapter = new StepsAdapter(getActivity(), mSteps, itemSelectListener);
+            recyclerView.setAdapter(mAdapter);
 
-        getParcelableExtra();
+            //using a LinearLayoutManager
+            mLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(mLayoutManager);
+
+            //improve performance
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setFocusable(false);
+
+            //TODO add a custom one
+            DividerItemDecoration dividerItemDecoration =
+                    new DividerItemDecoration(recyclerView.getContext(),
+                            mLayoutManager.getOrientation());
+            recyclerView.addItemDecoration(dividerItemDecoration);
+        }
+
+        //launches IngredientsActivity
+        ingredientButton.setOnClickListener(onButtonClick);
+
+        //return method(-> View)
         return view;
     }
 
     //Inner Methods
 
 
-
-    StepsAdapter.onItemSelectListener  itemSelectListener= new StepsAdapter.onItemSelectListener() {
+    /**
+     * TODO: comment and make name changes for more understanding
+     */
+    StepsAdapter.onItemSelectListener itemSelectListener = new StepsAdapter.onItemSelectListener() {
         @Override
         public void onItemClick(int position, List<RecipesModel.Steps> steps) {
             RecipesModel.Steps step = steps.get(position);
 
+//            boolean isTablet = getResources().getBoolean(R.bool.isTablet);
             String shortDescription = step.getShortDescription();
             String description = step.getDescription();
             String videoURL = step.getVideoURL();
 
-                Intent intent = new Intent(getContext(),PlayerActivity.class);
+//            if (!isTablet) {
+                Intent intent = new Intent(getContext(), PlayerActivityPhone.class);
 
-                intent.putExtra(SHORT_DESCRIPTION,shortDescription);
-                intent.putExtra(DESCRIPTION,shortDescription);
+                intent.putExtra(SHORT_DESCRIPTION, shortDescription);
 
-            if (description != null) {
-                intent.putExtra(VIDEO_URL,videoURL);
-            }
+                intent.putParcelableArrayListExtra(EXTRA_STEPS, (ArrayList<? extends Parcelable>) mSteps);
 
-            startActivity(intent);
-            }
+                intent.putExtra(DESCRIPTION, description);
+
+                intent.putExtra(POSITION,position);
+
+                intent.putExtra(VIDEO_URL, videoURL);
+
+//            L.toast(getContext(),mSteps);
+                startActivity(intent);
+
+//            }
+//            else {
+//                PlayerFragment fragment = PlayerFragment.newFragment(shortDescription, description, videoURL);
+//                FragmentManager manager = getFragmentManager();
+//                manager.beginTransaction()
+//                        .replace(R.id.frame_detail_container, fragment)
+//                        .setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
+////                        .addToBackStack(null)
+//                        .commit();
+//            }
+        }
 
     };
 
-    // Ingredient Button Click Listener
-    View.OnClickListener clickListener = new View.OnClickListener() {
+    //TODO comment on this and change name for better understanding
+    View.OnClickListener onButtonClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
-            List<RecipesModel.Ingredients> ingredients;
-            Bundle bundle = getActivity().getIntent().getExtras();
-            if (bundle != null) {
-                ingredients = bundle.getParcelableArrayList(EXTRA_INGREDIENTS);
-                Intent intent = new Intent(getContext(),IngredientsActivity.class);
-                intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS, (ArrayList<? extends Parcelable>) ingredients);
-                startActivity(intent);
-            }
+            Intent intent = IngredientsActivity.newIntent(getActivity(), mIngredients);
+            startActivity(intent);
         }
     };
 
-    /**
-     * gets intent data from MasterFragment
-     * */
-    private void getParcelableExtra() {
-
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null){
-            List<RecipesModel.Steps> steps = bundle.getParcelableArrayList(EXTRA_STEPS);
-            adapter = new StepsAdapter(getContext(),steps,itemSelectListener);
-        }
-
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-    }
 }
+
+

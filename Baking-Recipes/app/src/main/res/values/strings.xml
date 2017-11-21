@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Baking Recipes</string>
+    <string name="string_button_prev">PREVIOUS</string>
+    <string name="string_button_next">NEXT</string>
+    <string name="dialog_message">Are you sure you want to clear all items?</string>
+    <string name="dialog_neg_action">Cancel</string>
+    <string name="dialog_pos_action">Delete</string>
+    <string name="appwidget_text">Baking Recipes</string>
+    <string name="add_widget">Add widget</string>
+
 </resources>

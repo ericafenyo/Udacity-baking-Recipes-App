@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
 
 import java.util.List;
 
@@ -36,52 +36,72 @@ import butterknife.ButterKnife;
  */
 
 
-public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientsViewHolder>{
+public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientsViewHolder> {
 
-    private Context mContext;
+
+    private Context context;
     private List<RecipesModel.Ingredients> mData;
-    private onIngredientSelect mOnIngredientSelect;
+    private onIngredientItemClickListener mItemClickListener;
 
-    public IngredientsAdapter(Context mContext, List<RecipesModel.Ingredients> mData, onIngredientSelect mOnIngredientSelect) {
-        this.mContext = mContext;
+    //constructor
+    public IngredientsAdapter(Context context, List<RecipesModel.Ingredients> mData, onIngredientItemClickListener mItemClickListener) {
+        this.context = context;
         this.mData = mData;
-        this.mOnIngredientSelect = mOnIngredientSelect;
+        this.mItemClickListener = mItemClickListener;
     }
 
-    public interface onIngredientSelect{
-        void onItemClick(int position, List<RecipesModel.Ingredients> ingredients);
-    }
     @Override
-    public IngredientsAdapter.IngredientsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_recipes_ingredients,parent,false);
+    public IngredientsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_recipes_ingredients, parent, false);
+        //colors even and odd listView rows
+
+
         return new IngredientsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(IngredientsAdapter.IngredientsViewHolder holder, int position) {
-
+    public void onBindViewHolder(IngredientsViewHolder holder, int position) {
+        //gets Ingredients at their respective position within the List
         RecipesModel.Ingredients ingredients = mData.get(position);
-        holder.detailIngredients.setText(ingredients.getIngredient());
+        //uses the ViewHolder get reference to child views
+        holder.textIngredient.setText(ingredients.getIngredient());
+        holder.textIngredientMeasure.setText(String.format("%s %s", ingredients.getQuantity(), ingredients.getMeasure().toLowerCase()));
+
+        //colors even and odd RecyclerView rows
+        if (position % 2 == 1) {
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.even_row));
+        } else {
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.odd_row));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mData == null ? 0: mData.size();
+        return mData == null ? 0 : mData.size();
     }
 
+    //clickListener
+    public interface onIngredientItemClickListener {
+        void onItemClick(int position, List<RecipesModel.Ingredients> ingredients);
+    }
 
     public class IngredientsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.text_detail_ingredients)TextView detailIngredients;
+
+        @BindView(R.id.text_detail_ingredients)
+        TextView textIngredient;
+        @BindView(R.id.text_detail_ingredients_measure)
+        TextView textIngredientMeasure;
+
+
         public IngredientsViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            int position = getAdapterPosition();
-            mOnIngredientSelect.onItemClick(position,mData);
+            mItemClickListener.onItemClick(getAdapterPosition(), mData);
         }
     }
 }

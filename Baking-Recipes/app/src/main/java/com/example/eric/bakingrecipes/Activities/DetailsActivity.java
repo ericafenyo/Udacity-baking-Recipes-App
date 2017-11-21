@@ -17,23 +17,39 @@
 package com.example.eric.bakingrecipes.Activities;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
-import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.Fragments.DetailsFragment;
+import com.example.eric.bakingrecipes.R;
 
-public class DetailsActivity extends AppCompatActivity{
+
+public class DetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        DetailsFragment detailListFragment = new DetailsFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-//                .add(R.id.frame_detail_fragment,detailListFragment)
-                .commit();
+        //sets toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar_detail);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+
+        //checks if Fragment is null or not before creating new one
+        //this prevents multiple Fragment creation
+        if (savedInstanceState == null) {
+            Fragment mFragment = new DetailsFragment();
+
+            //inflates the fragment in the activity
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .add(R.id.frame_detail_container, mFragment)
+                    .commit();
+        }
     }
+
 }

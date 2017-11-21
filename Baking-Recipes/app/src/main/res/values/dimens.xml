@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (C) 2017 Eric Afenyo
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +14,8 @@
   limitations under the License.
   -->
 <resources>
-    <dimen name="side">16dp</dimen>
-    <dimen name="gap">8dp</dimen>
+    <dimen name="headset_horizontal_spacing">16dp</dimen>
+    <dimen name="headset_vertical_spacing">8dp</dimen>
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="headset_horizontal_gap">8dp</dimen>
 </resources>

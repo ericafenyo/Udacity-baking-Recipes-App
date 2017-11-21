@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package com.example.eric.bakingrecipes;
+package com.example.eric.bakingrecipes.Activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-public class PlayerActivity extends AppCompatActivity {
+import com.example.eric.bakingrecipes.R;
+
+public class FavoriteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_player);
+        setContentView(R.layout.activity_favorite);
     }
 }

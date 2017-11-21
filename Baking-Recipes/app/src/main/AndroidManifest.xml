@@ -21,7 +21,31 @@
         </activity>
         <activity android:name=".Activities.DetailsActivity" />
         <activity android:name=".Activities.IngredientsActivity" />
-        <activity android:name=".PlayerActivity"></activity>
+        <activity android:name=".Activities.PlayerActivity" />
+        <activity android:name=".Activities.ShoppingListActivity" />
+        <activity android:name=".Activities.FavoriteActivity" />
+        <activity android:name=".PlayerActivityPhone" />
+
+        <provider
+            android:name=".Utils.Data.generated.ShoppingListProvider"
+            android:authorities="com.example.eric.bakingrecipes"
+            android:exported="true" />
+
+        <receiver android:name=".RecipesAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipes_app_widget_info" />
+        </receiver>
+        <service android:name=".ShoppingListRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS">
+
+        </service>
+
+
     </application>
 
 </manifest>

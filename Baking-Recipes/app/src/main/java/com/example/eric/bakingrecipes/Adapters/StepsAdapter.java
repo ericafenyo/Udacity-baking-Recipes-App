@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
 
 import java.util.List;
 

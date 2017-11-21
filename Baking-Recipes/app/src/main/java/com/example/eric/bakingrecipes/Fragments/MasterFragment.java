@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ import android.view.ViewGroup;
 import com.example.eric.bakingrecipes.Activities.DetailsActivity;
 import com.example.eric.bakingrecipes.Adapters.MasterAdapter;
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +86,7 @@ public class MasterFragment extends Fragment {
         //Bind views
         ButterKnife.bind(this, view);
 
+
         Bundle args = getArguments();
         if (args != null) {
             //retrieves data from the bundle
@@ -99,6 +101,17 @@ public class MasterFragment extends Fragment {
             recyclerView.setHasFixedSize(true);
         }
 
+        //position to be clicked
+
+//        new Handler().postDelayed(new Runnable() {
+//            int pos = 0;
+//            @Override
+//            public void run() {
+//
+//                recyclerView.findViewHolderForAdapterPosition(0).itemView.performClick();
+//            }
+//        },1);
+
         //return method(-> View)
         return view;
 
@@ -112,30 +125,30 @@ public class MasterFragment extends Fragment {
             new MasterAdapter.onItemSelectListener() {
                 @Override
                 public void onItemClick(int position, List<RecipesModel> recipes) {
-
                     RecipesModel models = recipes.get(position);
 
-                    //gets Lists of Recipe Steps and Steps from there respective position in the Recipes JsonArray
+                    //gets Lists of Steps and Ingredients from their respective positions in the Recipes JsonArray
                     List<RecipesModel.Ingredients> ingredients = models.getIngredients();
                     List<RecipesModel.Steps> steps = models.getSteps();
 
-                    //Sends Intent data to DetailsActivity
-                    Intent intent = new Intent(getContext(), DetailsActivity.class);
-                    intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS,
-                            (ArrayList<? extends Parcelable>) ingredients);
+                    boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+                    if (!isTablet){
+
+                    // makes recipes ingredients and steps data available to DetailActivity though intent
+                    Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                    intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS, (ArrayList<? extends Parcelable>) ingredients);
                     intent.putParcelableArrayListExtra(EXTRA_STEPS, (ArrayList<? extends Parcelable>) steps);
-//          if (getActivity().findViewById(R.id.frame_detail_fragment) == null){
+                    //Sends Intent data to DetailsActivity
                     startActivity(intent);
-//          }else {
-//
-//              DetailsFragment detailListFragment = new DetailsFragment();
-//              FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//              fragmentManager.beginTransaction()
-////                      .replace(R.id.frame_detail_fragment,detailListFragment)
-//                      .commit();
-//
-////              L.toast(getActivity(),String.valueOf(position));
-//          }
+                }
+
+                    else if (isTablet){
+                        DetailsFragment fragment = DetailsFragment.newFragment(steps,ingredients);
+                        FragmentManager manager = getFragmentManager();
+                        manager.beginTransaction()
+                                .replace(R.id.frame_detail_container,fragment)
+                                .commit();
+                    }
 
 
                 }

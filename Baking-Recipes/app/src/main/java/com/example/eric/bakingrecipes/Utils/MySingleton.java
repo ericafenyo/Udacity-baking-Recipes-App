@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 
 /**
  * Created by eric on 06/11/2017.
+ * Google volley Singleton
  */
 
 public class MySingleton {
@@ -84,10 +85,10 @@ public class MySingleton {
  /*
  Using the Singleton
     // Get a RequestQueue
-    RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
+    RequestQueue queue = MySingleton.getInstance(Context.getApplicationContext()).
             getRequestQueue();
 
     // Add a request
-    MySingleton.getInstance(this).addToRequestQueue(stringRequest);*/
+    MySingleton.getInstance(Context).addToRequestQueue(Type of Request for example StringRequest);*/
 
 }

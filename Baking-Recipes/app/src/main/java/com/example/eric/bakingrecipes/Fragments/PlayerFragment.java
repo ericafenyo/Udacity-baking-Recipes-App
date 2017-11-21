@@ -26,11 +26,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.Utils.L;
+import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
 import com.example.eric.bakingrecipes.Utils.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,15 +43,33 @@ import butterknife.ButterKnife;
 
 public class PlayerFragment extends Fragment {
 
+    private static final String EXTRA_STEPS = "EXTRA_STEPS";
     private static final String VIDEO_URL = "VIDEO_URL";
     private static final String SHORT_DESCRIPTION = "SHORT_DESCRIPTION";
     private static final String DESCRIPTION = "DESCRIPTION";
+    private static String BUNDLED_STEPS = "BUNDLED_STEPS";
+    private static final String POSITION = "POSITION";
 
     SimpleExoPlayer mPlayer;
     @BindView(R.id.player_recipes)
     SimpleExoPlayerView mPlayerView;
-
     Player player;
+
+    /**
+     * @param shortDescription v
+     * @param description      v
+     * @param videoURL         v TODO: comment
+     * @return
+     */
+    public static PlayerFragment newFragment(String shortDescription, String description, String videoURL) {
+        PlayerFragment fragment = new PlayerFragment();
+        Bundle args = new Bundle();
+        args.putString(SHORT_DESCRIPTION, shortDescription);
+        args.putString(DESCRIPTION, description);
+        args.putString(VIDEO_URL, videoURL);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public PlayerFragment() {
         //should be empty
@@ -63,32 +83,44 @@ public class PlayerFragment extends Fragment {
         //Bind views
         ButterKnife.bind(this, view);
 
-        Bundle bundle = getActivity().getIntent().getExtras();
+        Bundle bundle;
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+
+//        L.toast(getActivity(),"Old Fragment");
+
+        //phones
+        bundle = getArguments();
+
+//                bundle = getActivity().getIntent().getExtras();
+
+
         if (bundle != null) {
             String shortDescription = bundle.getString(SHORT_DESCRIPTION);
             String description = bundle.getString(DESCRIPTION);
-
-
             String videoURL = bundle.getString(VIDEO_URL);
-            if (videoURL.isEmpty()){
-                mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.ph));
+            int position = bundle.getInt(POSITION);
+            List<RecipesModel.Steps> steps = bundle.getParcelableArrayList(EXTRA_STEPS);
 
+            if (videoURL.isEmpty()) {
+
+                mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.ph));
                 mPlayerView.hideController();
                 mPlayerView.setControllerVisibilityListener(new PlaybackControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int i) {
-                        if(i == 0) {
+                        if (i == 0) {
                             mPlayerView.hideController();
                         }
                     }
                 });
             }
-            L.log("From Player " + videoURL);
+//            L.log(videoURL);
             player = new Player(getContext(), mPlayer, mPlayerView, Uri.parse(videoURL));
 //
             player.initialize();
         }
 
+        //return method(-> View)
         return view;
     }
 

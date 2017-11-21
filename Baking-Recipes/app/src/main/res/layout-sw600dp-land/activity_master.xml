@@ -18,14 +18,14 @@
     android:id="@+id/linear_layout_master_two_pane"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:divider="@drawable/divider_vertical">
+    android:orientation="horizontal">
 
     <FrameLayout
         android:id="@+id/frame_master_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:elevation="@dimen/headset_vertical_spacing"/>
 
     <FrameLayout
         android:id="@+id/frame_detail_container"

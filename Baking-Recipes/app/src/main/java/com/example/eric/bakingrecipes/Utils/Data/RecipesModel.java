@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.eric.bakingrecipes;
+package com.example.eric.bakingrecipes.Utils.Data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -78,8 +78,8 @@ public class RecipesModel implements Parcelable{
         parcel.writeInt(servings);
 
         //Adding InnerClasses
-        parcel.writeParcelable((Parcelable) ingredients,i);
-        parcel.writeParcelable((Parcelable) steps,i);
+//        parcel.writeParcelable((Parcelable) ingredients,i);
+//        parcel.writeParcelable((Parcelable) steps,i);
 
     } //End of RecipesModel Parcelable
 

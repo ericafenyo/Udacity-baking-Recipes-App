@@ -27,7 +27,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +66,8 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.RecipesVie
     @Override
     public void onBindViewHolder(RecipesViewHolder holder, int position) {
         RecipesModel recipes = mData.get(position);
-        holder.name.setText(recipes.getName());
+        holder.textname.setText(recipes.getName());
+        holder.textServing.setText(String.valueOf(recipes.getSteps().size() + " Steps"));
     }
 
     @Override
@@ -77,7 +78,8 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.RecipesVie
 
     public class RecipesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.text_master_recipe_name)TextView name;
+        @BindView(R.id.text_master_recipe_name)TextView textname;
+        @BindView(R.id.text_view_main_steps)TextView textServing;
         public RecipesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
