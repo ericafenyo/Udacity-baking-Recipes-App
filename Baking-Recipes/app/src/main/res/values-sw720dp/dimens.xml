@@ -14,9 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true"
-        android:drawable="@color/green" />
-    <item android:state_selected="true"
-        android:drawable="@color/red" />
-</selector>
+<resources>
+    <dimen name="exo_player_height">510dp</dimen>
+    <dimen name="exp_player_height_land">480dp</dimen>
+</resources>

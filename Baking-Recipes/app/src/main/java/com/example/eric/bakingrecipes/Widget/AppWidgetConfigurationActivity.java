@@ -131,6 +131,7 @@ public class AppWidgetConfigurationActivity extends AppCompatActivity implements
     public void onClick(int position, List<RecipesModel> data) {
         //        stores int value used to get correct ingredients at the correct positions
         N.storeSLPreferences(this, "keyValue", position);
+        N.toast(getApplicationContext(),mAppWidgetId);
 
         //gets an instance of the AppWidgetManager by calling getInstance(Context):
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);

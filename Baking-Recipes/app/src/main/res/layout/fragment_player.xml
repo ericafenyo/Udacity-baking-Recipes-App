@@ -23,11 +23,10 @@
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/player_recipes"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_height="@dimen/exo_player_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ProgressBar
         android:id="@+id/progress_bar_player"
@@ -68,10 +67,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Add water"
+        tools:text="Add water"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view" />
-
 
 </android.support.constraint.ConstraintLayout>

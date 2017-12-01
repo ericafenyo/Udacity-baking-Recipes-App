@@ -72,7 +72,7 @@ public class Player {
                     new DefaultExtractorsFactory(), null, null);
             mPlayer.prepare(mediaSource);
         }
-        mPlayer.setPlayWhenReady(true);
+        mPlayer.setPlayWhenReady(false);
     }
 
     /**

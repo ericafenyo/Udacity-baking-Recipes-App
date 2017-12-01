@@ -62,6 +62,7 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.RecipesVie
     public void onBindViewHolder(RecipesViewHolder holder, int position) {
         RecipesModel recipes = mData.get(position);
         holder.textRecipeName.setText(recipes.getName());
+        holder.textStepCount.setText(String.valueOf(mData.get(position).getSteps().size() + " steps"));
     }
 
     @Override
@@ -75,7 +76,7 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.RecipesVie
         @BindView(R.id.text_master_recipe_name)
         TextView textRecipeName;
         @BindView(R.id.text_view_main_steps)
-        TextView textServing;
+        TextView textStepCount;
 
         public RecipesViewHolder(View itemView) {
             super(itemView);

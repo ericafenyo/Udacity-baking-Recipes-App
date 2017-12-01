@@ -40,6 +40,7 @@ import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
 import com.example.eric.bakingrecipes.Utils.DividerItemDecoration;
 import com.example.eric.bakingrecipes.Utils.N;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ import butterknife.ButterKnife;
  * Created by eric on 08/11/2017
  */
 
-public class DetailsFragment extends Fragment implements View.OnClickListener {
+public class DetailsFragment extends Fragment implements View.OnClickListener, RecipeStepsAdapter.onItemSelectListener {
 
     private static final String EXTRA_STEPS = "EXTRA_STEPS";
     private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
@@ -72,7 +73,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     private List<RecipesModel.Ingredients> mIngredients = new ArrayList<>();
 
     @BindView(R.id.button_ingredients_list_launcher)
-    TextView textViewIngredientButton;
+    TextView buttonLaunchIngredient;
     @BindView(R.id.recyclerView_detail_steps)
     RecyclerView recyclerView;
     @Nullable
@@ -82,7 +83,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.text_view_detail_recipe_title)
     TextView textViewDetailRecipeTitle;
     @BindView(R.id.button_detail_share)
-    ImageView buttonshare;
+    ImageView buttonShare;
 
     /**
      * @param stepsData       list of recipe steps
@@ -125,7 +126,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
             textViewDetailRecipeTitle.setText(String.format(bundle.getString(RECIPE_NAME)));
             //specifying an Adapter
             RecipeStepsAdapter adapter = new RecipeStepsAdapter(getActivity(),
-                    mSteps, itemSelectListener);
+                    mSteps, this);
             recyclerView.setAdapter(adapter);
 
             //using a LinearLayoutManager
@@ -159,7 +160,9 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
             }
         }
         //button to launch IngredientsActivity
-        textViewIngredientButton.setOnClickListener(this);
+        buttonLaunchIngredient.setOnClickListener(this);
+        //share button
+        buttonShare.setOnClickListener(this);
 
         //return method(-> View)
         return view;
@@ -186,42 +189,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    //Inner Methods
-    /**
-     * TODO: comment and make name changes for more understanding
-     */
-    RecipeStepsAdapter.onItemSelectListener itemSelectListener = new RecipeStepsAdapter.onItemSelectListener() {
-        @Override
-        public void onItemClick(int position, List<RecipesModel.Steps> steps) {
-            //get recipe steps object at their respective position
-            RecipesModel.Steps step = steps.get(position);
-            //checks if the device is either a Tablet or a Handset
-            boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-            shortDescription = step.getShortDescription();
-            description = step.getDescription();
-            videoURL = step.getVideoURL();
-
-            N.storeSLPreferences(getActivity(), "CLICK_POSITION_KEY", position);
-            if (!isTablet) {
-                //uses Intent to pass data to Player activity
-                executeIntent(position);
-
-            } else {
-                Fragment playerFragment = PagerPlayerFragment.newFragment(shortDescription, description, videoURL);
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-
-                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    executeIntent(position);
-                } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    manager.beginTransaction()
-                            .replace(R.id.frame_player_container, playerFragment, "TAG_PLAYER")
-                            .commit();
-                }
-            }
-        }
-
-    };
-
     private void executeIntent(int position) {
         Intent intent = new Intent(getContext(), PlayerActivityPhone.class);
         intent.putParcelableArrayListExtra(EXTRA_STEPS, (ArrayList<? extends Parcelable>) mSteps);
@@ -234,6 +201,9 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.button_ingredients_list_launcher:
+
         //verify type of device (returns true for a Tablet and false for a Handset)
         boolean isTablet = getResources().getBoolean(R.bool.isTablet);
         if (!isTablet) {
@@ -249,6 +219,54 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
                 manager.beginTransaction()
                         .replace(R.id.frame_player_container, fragment)
                         .addToBackStack(TAG_INGREDIENT)
+                        .commit();
+            }
+        }
+
+                break;
+            case R.id.button_detail_share:
+
+                StringBuilder sb = new StringBuilder();
+                for (RecipesModel.Ingredients s : mIngredients)
+                {
+                    String string = s.getIngredient();
+                    sb.append(string + "\n");
+                }
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, (Serializable) sb);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+
+            break;
+        }
+    }
+
+    @Override
+    public void onItemClick(int position, List<RecipesModel.Steps> steps) {
+        //get recipe steps object at their respective position
+        RecipesModel.Steps step = steps.get(position);
+        //checks if the device is either a Tablet or a Handset
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+        shortDescription = step.getShortDescription();
+        description = step.getDescription();
+        videoURL = step.getVideoURL();
+
+        N.storeSLPreferences(getActivity(), "CLICK_POSITION_KEY", position);
+        if (!isTablet) {
+            //uses Intent to pass data to Player activity
+            executeIntent(position);
+
+        } else {
+            Fragment playerFragment = PagerPlayerFragment.newFragment(shortDescription, description, videoURL);
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                executeIntent(position);
+            } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                manager.beginTransaction()
+                        .replace(R.id.frame_player_container, playerFragment, "TAG_PLAYER")
                         .commit();
             }
         }

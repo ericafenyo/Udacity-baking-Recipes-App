@@ -15,7 +15,6 @@
   limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -41,7 +40,7 @@
         <ProgressBar
             android:id="@+id/progress_bar_master"
             android:layout_gravity="center"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -54,7 +53,7 @@
             android:layout_marginTop="54dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="No Connection "
+            android:text="@string/no_connection_error"
             android:textSize="24sp" />
 
         <Button
@@ -63,9 +62,8 @@
             android:layout_height="wrap_content"
             android:visibility="invisible"
             android:layout_marginTop="100dp"
-            android:text="Retry"
+            android:text="@string/retry_button_text"
             android:onClick="onRetry"
             android:layout_gravity="center"/>
     </FrameLayout>
-
 </LinearLayout>

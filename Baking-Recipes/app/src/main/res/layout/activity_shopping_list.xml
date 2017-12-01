@@ -18,9 +18,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--Toolbar-->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <include
             android:id="@+id/toolbar_shopping_list"
             layout="@layout/toolbar" />
@@ -30,6 +32,5 @@
         android:id="@+id/frame_shopping_list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </LinearLayout>
-
-

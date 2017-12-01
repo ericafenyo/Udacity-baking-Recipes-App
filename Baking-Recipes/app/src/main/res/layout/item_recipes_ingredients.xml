@@ -13,9 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -23,35 +22,34 @@
         android:id="@+id/button_add_to_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="6dp"
-        android:layout_marginStart="8dp"
         android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_add" />
+        android:padding="6dp"
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/content_description" />
 
     <TextView
         android:id="@+id/text_detail_ingredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="14dp"
         android:layout_marginStart="@dimen/headset_horizontal_spacing"
+        android:layout_marginTop="14dp"
         android:layout_toEndOf="@id/button_add_to_cart"
-        android:text="carrot"
-        android:textSize="15dp" />
+        android:textSize="15sp"
+        tools:text="carrot" />
 
     <TextView
         android:id="@+id/text_detail_ingredients_measure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp"
         android:layout_alignStart="@id/text_detail_ingredients"
         android:layout_below="@id/text_detail_ingredients"
-        android:text="2G"
-        android:textSize="12sp" />
+        android:layout_marginBottom="14dp"
+        android:textSize="12sp"
+        tools:text="2G" />
 
 </RelativeLayout>
-
-

@@ -7,7 +7,6 @@
     <string name="dialog_pos_action">Delete</string>
     <string name="appwidget_text">Baking Recipes</string>
     <string name="add_widget">Add widget</string>
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_ingredients">Add Ingredients</string>
     <string name="remove_all_list">Remove from shopping list</string>
@@ -22,5 +21,11 @@
     <string name="toolbar_ingredients_title">Ingredients</string>
     <string name="toolbar_shopping_list_title">Shopping List</string>
     <string name="keep_track_of_your_ingredients">Keep track of your ingredients</string>
+    <string name="recipe_steps">RECIPE STEPS</string>
+    <string name="content_description">contentDescription</string>
+    <string name="no_connection_error">No Connection</string>
+    <string name="retry_button_text">Retry</string>
+    <string name="clear_all_button_text">Clear All</string>
+    <string name="menu_shopping_list_text">Shopping List</string>
 
 </resources>

@@ -13,7 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,15 +20,11 @@
     android:layout_height="match_parent"
     tools:context="com.example.eric.bakingrecipes.Activities.DetailsActivity">
 
-
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        tools:context="com.example.eric.bakingrecipes.Activities.DetailsActivity">
+        android:layout_marginStart="32dp">
 
         <View
             android:id="@+id/view_bis"
@@ -56,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_bis"
             tools:text="servings" />
@@ -82,21 +77,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_view_detail_no_of_servings" />
 
-
         <TextView
             android:id="@+id/text_view"
             android:layout_width="wrap_content"
             android:layout_height="23dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:text="RECIPE STEPS"
+            android:text="@string/recipe_steps"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_ingredients_list_launcher" />
-
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView_detail_steps"
@@ -106,16 +99,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
-
         <ImageView
-            android:id="@+id/image_detail_share"
+            android:id="@+id/button_detail_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_share_tab"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_bis" />
+            app:layout_constraintTop_toBottomOf="@+id/view_bis"
+            android:contentDescription="@string/content_description" />
 
         <TextView
             android:id="@+id/text_view_detail_recipe_title"
@@ -129,8 +122,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>
-
-

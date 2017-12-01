@@ -63,10 +63,6 @@ public class DetailsActivity extends AppCompatActivity {
             mIngredients = bundle.getParcelableArrayList(EXTRA_INGREDIENTS);
         }
 
-        //TODO: delete
-        //verify type of device (returns true for a Tablet and false for a Handset)
-        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-
         //create new Fragment only if savedInstanceState is null
         if (savedInstanceState == null) {
             Fragment fragment = new DetailsFragment();

@@ -13,21 +13,21 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#1cf3a183">
+    android:background="#1cf3a183"
+    android:orientation="vertical">
 
+    <!--Toolbar>-->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <include
-        android:id="@+id/toolbar_master"
-        layout="@layout/toolbar" />
-</android.support.design.widget.AppBarLayout>
+
+        <include
+            android:id="@+id/toolbar_master"
+            layout="@layout/toolbar" />
+    </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -36,40 +36,36 @@
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/recyclerView_fragment_master_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <ProgressBar
             android:id="@+id/progress_bar_master"
-            android:layout_gravity="center"
-            android:visibility="invisible"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/text_view_network_info"
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:layout_marginTop="54dp"
+            android:layout_gravity="center"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:visibility="invisible"
-            android:text="No Connection "
-            android:textSize="24sp" />
+            android:layout_marginTop="54dp"
+            android:text="@string/no_connection_error"
+            android:textSize="24sp"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/button_retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="100dp"
-            android:visibility="invisible"
-            android:text="Retry"
             android:onClick="onRetry"
-            android:layout_gravity="center"/>
+            android:text="@string/retry_button_text"
+            android:visibility="invisible" />
+
     </FrameLayout>
-
-
-
-
-
 </LinearLayout>

@@ -14,18 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/text_detail_ingredients_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="carrot"/>
-
-</android.support.constraint.ConstraintLayout>
+<resources>
+    <dimen name="exo_player_height">340dp</dimen>
+    <dimen name="exp_player_height_land">360dp</dimen>
+</resources>

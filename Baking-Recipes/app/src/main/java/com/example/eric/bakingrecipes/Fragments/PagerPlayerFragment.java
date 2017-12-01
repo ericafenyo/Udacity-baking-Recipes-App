@@ -118,7 +118,6 @@ public class PagerPlayerFragment extends Fragment {
 
     }
 
-    //TODO: Comment on this
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

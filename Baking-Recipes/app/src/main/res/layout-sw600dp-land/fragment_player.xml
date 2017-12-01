@@ -31,7 +31,7 @@
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/player_recipes"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
+        android:layout_height="@dimen/exp_player_height_land"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

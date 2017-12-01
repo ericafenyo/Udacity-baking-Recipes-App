@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,18 +70,14 @@ public class MasterActivity extends AppCompatActivity implements MasterAdapter.o
     private static final String SERVINGS = "SERVINGS";
 
 //    private MasterAdapter mAdapter;
-    //TODO: check for hd dims ans xhd dims
     private List<RecipesModel> mRecipes;
 
     @BindView(R.id.recyclerView_fragment_master_list)
     RecyclerView recyclerView;
-    @Nullable
     @BindView(R.id.text_view_network_info)
     TextView textViewNetworkInfo;
-    @Nullable
     @BindView(R.id.progress_bar_master)
     ProgressBar progressBar;
-    @Nullable
     @BindView(R.id.button_retry)
     Button buttonRetry;
 
@@ -101,6 +96,7 @@ public class MasterActivity extends AppCompatActivity implements MasterAdapter.o
         //make network call only if recipe data is null;
         if (savedInstanceState != null) {
             mRecipes = savedInstanceState.getParcelableArrayList(BUNDLED_RECIPES);
+            progressBar.setVisibility(View.INVISIBLE);
             setAdapter(recyclerView);
             setLayoutManager(recyclerView);
             if (mRecipes == null) {

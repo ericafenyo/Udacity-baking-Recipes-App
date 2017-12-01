@@ -18,6 +18,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--Toolbar>-->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -27,7 +28,7 @@
             layout="@layout/toolbar" />
     </android.support.design.widget.AppBarLayout>
 
-
+    <!--ViewPager>-->
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/view_pager_add_ingredients"
         android:layout_width="match_parent"
