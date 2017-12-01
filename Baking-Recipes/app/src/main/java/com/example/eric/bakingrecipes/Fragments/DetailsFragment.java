@@ -49,6 +49,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by eric on 08/11/2017
+ * This test does not support tablet landscape mode
  */
 
 public class DetailsFragment extends Fragment implements View.OnClickListener, RecipeStepsAdapter.onItemSelectListener {

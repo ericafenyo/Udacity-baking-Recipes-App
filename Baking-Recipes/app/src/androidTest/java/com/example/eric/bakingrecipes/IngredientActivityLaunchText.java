@@ -41,7 +41,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 /**
- * Created by eric on 21/11/2017.
+ * Created by eric on 21/11/2017
+ * NB: Test doesn't support tablet landscape mode
  */
 
 @RunWith(AndroidJUnit4.class)
@@ -62,7 +63,7 @@ public class IngredientActivityLaunchText {
     }
 
     @Test
-    public void testActionButton() {
+    public void testAlertButton() {
         //find the view and perform click action
         onView(withId(R.id.action_shopping_list)).perform(click());
         onView(withId(R.id.action_add_ingredients)).perform(click());
@@ -72,8 +73,18 @@ public class IngredientActivityLaunchText {
     }
 
 
+
+
     @Test
     public void testAlertDialog() {
+                        performActionDialogTest();
+            }
+
+
+    /**
+     * perform test on AlertDialog
+     */
+    public void performActionDialogTest(){
         //find the view and perform click action
         onView(withId(R.id.action_shopping_list)).perform(click());
         onView(allOf(withId(R.id.button_shopping_list_delete_all))).perform(new ViewAction() {//remove visibility constraint
@@ -99,6 +110,5 @@ public class IngredientActivityLaunchText {
                 .check(matches(isDisplayed()))
                 .perform(click());
     }
+
 }
-
-
