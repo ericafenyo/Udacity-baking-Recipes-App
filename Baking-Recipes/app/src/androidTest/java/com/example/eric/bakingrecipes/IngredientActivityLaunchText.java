@@ -63,7 +63,7 @@ public class IngredientActivityLaunchText {
     }
 
     @Test
-    public void testAlertButton() {
+    public void testActionButton() {
         //find the view and perform click action
         onView(withId(R.id.action_shopping_list)).perform(click());
         onView(withId(R.id.action_add_ingredients)).perform(click());
@@ -84,7 +84,7 @@ public class IngredientActivityLaunchText {
     /**
      * perform test on AlertDialog
      */
-    public void performActionDialogTest(){
+    public void performAlertDialogTest(){
         //find the view and perform click action
         onView(withId(R.id.action_shopping_list)).perform(click());
         onView(allOf(withId(R.id.button_shopping_list_delete_all))).perform(new ViewAction() {//remove visibility constraint
