@@ -8,4 +8,19 @@
     <string name="appwidget_text">Baking Recipes</string>
     <string name="add_widget">Add widget</string>
 
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_ingredients">Add Ingredients</string>
+    <string name="remove_all_list">Remove from shopping list</string>
+    <string name="add_all_to_list">Add all to Shopping list</string>
+    <string name="recipe_appwidget_text">Ingredients</string>
+    <string name="ingredients">INGREDIENTS</string>
+    <string name="server_info">Couldn\'t load data from Server</string>
+    <string name="add_to_list">ADDED TO SHOPPING LIST</string>
+    <string name="remove_from_list">REMOVED FROM SHOPPING LIST</string>
+    <string name="view_list_action">VIEW LIST</string>
+    <string name="toolbar_detail_title">Recipe Details</string>
+    <string name="toolbar_ingredients_title">Ingredients</string>
+    <string name="toolbar_shopping_list_title">Shopping List</string>
+    <string name="keep_track_of_your_ingredients">Keep track of your ingredients</string>
+
 </resources>

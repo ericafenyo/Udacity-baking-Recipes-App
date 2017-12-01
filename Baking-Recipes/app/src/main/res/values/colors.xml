@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimaryDark">#dec26e65</color>
+    <color name="colorSecondary">#fff</color>
+    <color name="colorAccent">#ea827a</color>
 
     <!--added colors-->
-    <color name="colorGray">#9E9E9E</color>
+    <color name="colorGray">#878787</color>
     <color name="colorLightGray">#949e9e9e</color>
-    <color name="even_row">#f7f7f7</color>
+    <color name="even_row">#faf4f4</color>
     <color name="odd_row">#ffffff</color>
-    <color name="colorBlack">#151515</color>
+    <color name="colorBlack">#333333</color>
+    <color name="colorBis">#ea827a</color>
+    <color name="colorBis2">#F3A183</color>
 </resources>

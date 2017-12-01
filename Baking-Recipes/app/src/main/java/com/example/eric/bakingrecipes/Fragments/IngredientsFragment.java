@@ -17,6 +17,7 @@
 package com.example.eric.bakingrecipes.Fragments;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -28,12 +29,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.eric.bakingrecipes.Activities.ShoppingListActivity;
 import com.example.eric.bakingrecipes.Adapters.IngredientsAdapter;
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesAppWidget;
 import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.N;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,40 +44,40 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.eric.bakingrecipes.Utils.Data.ShoppingListContentProvider.ContentUris.ALL_ITEMS;
 import static com.example.eric.bakingrecipes.Utils.Data.ShoppingListContract.ShoppingListColumns.INGREDIENT;
-import static com.example.eric.bakingrecipes.Utils.Data.ShoppingListProvider.ContentUris.ALL_ITEMS;
 
 /**
  * Created by eric on 08/11/2017.
  */
 
-public class IngredientsFragment extends Fragment {
+public class IngredientsFragment extends Fragment implements IngredientsAdapter.onItemSelectListener {
 
-    private static final String BUNDLED_INGREDIENTS = "BUNDLED_INGREDIENTS";
     private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
+    private static final String MST_KEY = "MST_KEY";
 
     private IngredientsAdapter mAdapter;
-    List<RecipesModel.Ingredients> ingredients = new ArrayList<>();
+    private List<RecipesModel.Ingredients> mIngredients = new ArrayList<>();
+
     @BindView(R.id.recycler_view_ingredients)
     RecyclerView recyclerView;
     @BindView(R.id.text_view_ingredients_details_info)
     TextView textIngredientInfo;
-    @BindView(R.id.text_view_ingredients_add_to_shopping_list_button)
-    TextView buttonAddAllIngredient;
 
     /**
-     * @param ingredientsData v
-     * @return
+     * @param ingredientsData list of recipe ingredients
+     * @return instance of IngredientsFragment
      */
     public static IngredientsFragment newFragment(List<RecipesModel.Ingredients> ingredientsData) {
         IngredientsFragment fragment = new IngredientsFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(BUNDLED_INGREDIENTS, (ArrayList<? extends Parcelable>) ingredientsData);
+        args.putParcelableArrayList(EXTRA_INGREDIENTS, (ArrayList<? extends Parcelable>) ingredientsData);
         fragment.setArguments(args);
         return fragment;
     }
 
     public IngredientsFragment() {
+        //should be empty
     }
 
     @Nullable
@@ -83,54 +86,95 @@ public class IngredientsFragment extends Fragment {
         View view = inflater.inflate(R.layout.frament_ingredients_list, container, false);
         ButterKnife.bind(this, view);
 
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null) {
-            ingredients = bundle.getParcelableArrayList(EXTRA_INGREDIENTS);
-            textIngredientInfo.setText(String.format("Number of Items: %s", String.valueOf(ingredients.size())));
+        Bundle bundle;
+        if (getArguments() != null) {
+            bundle = getArguments();
+        } else {
+            bundle = getActivity().getIntent().getExtras();
+        }
 
-            mAdapter = new IngredientsAdapter(getActivity(), ingredients, onClickListener);
+        if (bundle != null) {
+            mIngredients = bundle.getParcelableArrayList(EXTRA_INGREDIENTS);
+            assert mIngredients != null;
+            textIngredientInfo.setText(String.format("Number of Items: %s", String.valueOf(mIngredients.size())));
+
+            //specifying an Adapter and LayoutManager
+            mAdapter = new IngredientsAdapter(getActivity(), mIngredients, this);
             recyclerView.setAdapter(mAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            //return method(-> View)
-
-
-            buttonAddAllIngredient.setOnClickListener(addAllOnClickListener);
-            // this will send the broadcast to update the appwidget
-
         }
+        //return method(-> View)
         return view;
     }
 
-    IngredientsAdapter.onIngredientItemClickListener onClickListener = new IngredientsAdapter.onIngredientItemClickListener() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter = new IngredientsAdapter(getActivity(), mIngredients, this);
+        recyclerView.setAdapter(mAdapter);
+    }
 
-        @Override
-        public void onItemClick(int position, List<RecipesModel.Ingredients> ingredients) {
-
-        }
-    };
-
-    View.OnClickListener addAllOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String allIngredient;
-
-            try {
-                for (int i = 0; i < ingredients.size(); i++){
-                    allIngredient = ingredients.get(i).getIngredient();
-                    ContentValues values = new ContentValues();
-
-                    values.put(INGREDIENT,allIngredient);
-                    Uri uri = getActivity().getContentResolver().insert(ALL_ITEMS,values);
-                    if (uri != null){
-                        getActivity().getContentResolver().notifyChange(uri,null);
+    /**
+     * add ingredient to shopping list(database)
+     *
+     * @param data recipe ingredients
+     */
+    public void addData(String data) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put(INGREDIENT, data);
+            Uri uri = getActivity().getContentResolver().insert(ALL_ITEMS, values);
+            if (uri != null) {
+                getActivity().getContentResolver().notifyChange(uri, null);
+                N.storeSLPreferences(getActivity(), data, 1);
+                //snackBar
+                N.makeSnackAction(getView(), getString(R.string.add_to_list), getString(R.string.view_list_action), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), ShoppingListActivity.class);
+                        intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS, (ArrayList<? extends Parcelable>) mIngredients);
+                        startActivity(intent);
                     }
-
-                }
-                RecipesAppWidget.sendRefreshBroadcast(getActivity());
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e("Insertion Error:","Data could not be inserted " + e );
+                });
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("Insertion Error:", "Data could not be inserted " + e);
         }
-    };
+    }
+
+    /**
+     * remove ingredient from shopping list(database)
+     *
+     * @param data recipe ingredients
+     */
+    private void deleteData(String data) {
+        int fb = getActivity().getContentResolver().delete(ALL_ITEMS, INGREDIENT + "=" + "'" + data + "'", null);
+        if (fb > 0) {
+            getActivity().getContentResolver().notifyChange(ALL_ITEMS, null);
+            N.makeSnackAction(getView(), getString(R.string.remove_from_list), getString(R.string.view_list_action), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), ShoppingListActivity.class);
+                    intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS, (ArrayList<? extends Parcelable>) mIngredients);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onItemClick(int position, List<RecipesModel.Ingredients> ingredients, ImageView addToCart) {
+        String data = ingredients.get(position).getIngredient();
+        int inFb = N.getSLPreferences(getActivity(), ingredients.get(position).getIngredient(), 0);
+        if (inFb == 0) {
+            addToCart.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove));
+            N.storeSLPreferences(getActivity(), data, 1);
+            addData(data);
+        } else if (inFb == 1) {
+            addToCart.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add));
+            N.storeSLPreferences(getActivity(), data, 0);
+            deleteData(data);
+        }
+    }
 }

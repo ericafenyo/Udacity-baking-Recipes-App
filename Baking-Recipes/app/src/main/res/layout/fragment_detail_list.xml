@@ -30,37 +30,25 @@
         tools:context="com.example.eric.bakingrecipes.Activities.DetailsActivity">
 
 
-        <!--TODO: comment on this-->
-
-        <TextView
-            android:id="@+id/text_view_shopping_list_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_detail_thumbnail" />
 
         <View
+            android:id="@+id/view_bis"
             android:layout_width="match_parent"
             android:layout_height="0.2dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
             android:background="@color/colorLightGray"
-            app:layout_constraintTop_toBottomOf="@id/text_view_detail_no_of_servings" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view_detail_recipe_title" />
 
         <TextView
             android:id="@+id/text_view_detail_no_of_servings"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="servings"
-            app:layout_constraintEnd_toStartOf="@id/image_detail_fav"
-            app:layout_constraintStart_toEndOf="@id/text_view_shopping_list_count"
-            app:layout_constraintTop_toBottomOf="@id/image_detail_thumbnail" />
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_bis"
+            tools:text="servings" />
 
         <TextView
             android:id="@+id/button_ingredients_list_launcher"
@@ -69,47 +57,60 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:background="@color/colorGray"
-            android:paddingBottom="8dp"
+            android:background="@color/colorPrimaryDark"
+            android:paddingBottom="16dp"
             android:paddingEnd="16dp"
             android:paddingStart="16dp"
-            android:paddingTop="8dp"
-            android:text="Ingredients"
+            android:paddingTop="16dp"
+            android:text="INGREDIENTS"
             android:textAlignment="center"
             android:textColor="@color/cardview_light_background"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_detail_no_of_servings" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view_detail_no_of_servings" />
 
+
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="RECIPE STEPS"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_ingredients_list_launcher" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView_detail_steps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_ingredients_list_launcher" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view" />
 
 
         <ImageView
-            android:id="@+id/image_detail_fav"
+            android:id="@+id/button_detail_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
+            android:padding="16dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_serving_lunch"
-            app:layout_constraintEnd_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_detail_thumbnail" />
+            android:src="@drawable/ic_share"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_bis" />
 
-        <ImageView
-            android:id="@+id/image_detail_thumbnail"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/cake"
+        <TextView
+            android:id="@+id/text_view_detail_recipe_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            android:textAlignment="center"
+            tools:text="Brownies"
+            android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -21,29 +21,35 @@
         </activity>
         <activity android:name=".Activities.DetailsActivity" />
         <activity android:name=".Activities.IngredientsActivity" />
-        <activity android:name=".Activities.PlayerActivity" />
         <activity android:name=".Activities.ShoppingListActivity" />
-        <activity android:name=".Activities.FavoriteActivity" />
-        <activity android:name=".PlayerActivityPhone" />
+        <activity android:name=".Activities.PlayerActivityPhone" />
+        <activity android:name=".Activities.AddIngredientsActivity" />
+
+        <activity android:name=".Widget.AppWidgetConfigurationActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
 
         <provider
-            android:name=".Utils.Data.generated.ShoppingListProvider"
+            android:name=".Utils.Data.generated.ShoppingListContentProvider"
             android:authorities="com.example.eric.bakingrecipes"
             android:exported="true" />
 
-        <receiver android:name=".RecipesAppWidget">
+
+        <receiver android:name=".Widget.RecipeAppWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/recipes_app_widget_info" />
+                android:resource="@xml/recipe_app_widget_info" />
         </receiver>
-        <service android:name=".ShoppingListRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS">
 
-        </service>
+
+        <service android:name=".Widget.RecipeRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
 
     </application>

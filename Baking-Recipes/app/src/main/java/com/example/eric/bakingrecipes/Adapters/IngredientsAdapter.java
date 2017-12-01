@@ -21,10 +21,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.N;
 
 import java.util.List;
 
@@ -32,46 +34,57 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by eric on 08/11/2017.
+ * Created by eric on 08/11/2017
  */
 
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientsViewHolder> {
 
-
     private Context context;
     private List<RecipesModel.Ingredients> mData;
-    private onIngredientItemClickListener mItemClickListener;
+    private onItemSelectListener mItemClickListener;
 
     //constructor
-    public IngredientsAdapter(Context context, List<RecipesModel.Ingredients> mData, onIngredientItemClickListener mItemClickListener) {
+    public IngredientsAdapter(Context context, List<RecipesModel.Ingredients> mData,
+                              onItemSelectListener mItemClickListener) {
         this.context = context;
         this.mData = mData;
         this.mItemClickListener = mItemClickListener;
     }
 
+    //ItemClickListener
+    public interface onItemSelectListener {
+        void onItemClick(int position, List<RecipesModel.Ingredients> ingredients,
+                         ImageView imageView);
+    }
+
     @Override
     public IngredientsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_recipes_ingredients, parent, false);
-        //colors even and odd listView rows
-
-
+        View view = LayoutInflater.from(context).inflate(R.layout.item_recipes_ingredients, parent,
+                false);
         return new IngredientsViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(IngredientsViewHolder holder, int position) {
-        //gets Ingredients at their respective position within the List
         RecipesModel.Ingredients ingredients = mData.get(position);
-        //uses the ViewHolder get reference to child views
         holder.textIngredient.setText(ingredients.getIngredient());
-        holder.textIngredientMeasure.setText(String.format("%s %s", ingredients.getQuantity(), ingredients.getMeasure().toLowerCase()));
+        holder.textIngredientMeasure.setText(String.format("%s %s", ingredients.getQuantity(),
+                ingredients.getMeasure().toLowerCase()));
 
         //colors even and odd RecyclerView rows
         if (position % 2 == 1) {
             holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.even_row));
         } else {
             holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.odd_row));
+        }
+
+        //uses sharedPreference values to set drawable resources when ingredients are added or removed from shopping list
+        int inFb = N.getSLPreferences(context, mData.get(position).getIngredient(), 0);
+        if (inFb == 1) {
+            holder.addToCart.setImageDrawable(context.getDrawable(R.drawable.ic_remove));
+        } else if (inFb == 0) {
+            holder.addToCart.setImageDrawable(context.getDrawable(R.drawable.ic_add));
         }
     }
 
@@ -80,28 +93,25 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         return mData == null ? 0 : mData.size();
     }
 
-    //clickListener
-    public interface onIngredientItemClickListener {
-        void onItemClick(int position, List<RecipesModel.Ingredients> ingredients);
-    }
-
     public class IngredientsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.text_detail_ingredients)
         TextView textIngredient;
         @BindView(R.id.text_detail_ingredients_measure)
         TextView textIngredientMeasure;
-
+        @BindView(R.id.button_add_to_cart)
+        ImageView addToCart;
 
         public IngredientsViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
+            addToCart.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            mItemClickListener.onItemClick(getAdapterPosition(), mData);
+            mItemClickListener.onItemClick(getAdapterPosition(), mData, addToCart);
+
         }
     }
 }

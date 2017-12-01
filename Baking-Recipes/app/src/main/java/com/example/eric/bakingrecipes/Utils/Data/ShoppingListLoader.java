@@ -22,10 +22,10 @@ import android.database.Cursor;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-import static com.example.eric.bakingrecipes.Utils.Data.ShoppingListProvider.ContentUris.ALL_ITEMS;
+import static com.example.eric.bakingrecipes.Utils.Data.ShoppingListContentProvider.ContentUris.ALL_ITEMS;
 
 /**
- * Created by eric on 18/11/2017.
+ * Created by eric on 18/11/2017
  */
 
 public class ShoppingListLoader extends AsyncTaskLoader<Cursor> {
@@ -41,17 +41,14 @@ public class ShoppingListLoader extends AsyncTaskLoader<Cursor> {
 
     @Override
     public Cursor loadInBackground() {
-
-
         try {
+            //query for all items in database
             return  getContext().getContentResolver().query(ALL_ITEMS,null,null,null,null);
-
         } catch (Exception e) {
             Log.e("Error querying data: ",e.toString());
             e.printStackTrace();
             return null;
         }
-
     }
 
     @Override

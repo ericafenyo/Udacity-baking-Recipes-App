@@ -16,10 +16,7 @@
 
 package com.example.eric.bakingrecipes.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,37 +26,40 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.eric.bakingrecipes.R;
-import com.example.eric.bakingrecipes.RecipesAppWidget;
-import com.example.eric.bakingrecipes.ShoppingListModel;
-import com.example.eric.bakingrecipes.Utils.Data.ShoppingListProvider;
-import com.example.eric.bakingrecipes.Utils.L;
+import com.example.eric.bakingrecipes.Utils.Data.ShoppingListModel;
+import com.example.eric.bakingrecipes.Utils.Data.ShoppingListContentProvider;
+import com.example.eric.bakingrecipes.Utils.N;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.content.Context.MODE_PRIVATE;
-
 /**
  * Created by eric on 08/11/2017.
  */
 
 
-public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>{
+public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder> {
 
     private Context context;
     private List<ShoppingListModel> mData;
-    private static final String DSK = "SKey";
+    private static final String ADD_ALL_KEY = "ADD_ALL_KEY";
+    private ListItemClickListener mItemClickListener;
 
-    public ShoppingListAdapter(Context context, List<ShoppingListModel> mData) {
+    public ShoppingListAdapter(Context context, List<ShoppingListModel> mData, ListItemClickListener mItemClickListener) {
         this.context = context;
         this.mData = mData;
+        this.mItemClickListener = mItemClickListener;
+    }
+
+    public interface ListItemClickListener {
+        void onItemClick(int position, List<ShoppingListModel> listData);
     }
 
     @Override
     public ShoppingListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_recipes_shopping_list,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_recipes_shopping_list, parent, false);
         return new ShoppingListViewHolder(view);
     }
 
@@ -79,8 +79,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
     @Override
     public int getItemCount() {
-        return mData == null ? 0: mData.size();
-}
+        return mData == null ? 0 : mData.size();
+    }
 
     public class ShoppingListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.text_view_shopping_list_ingredients)
@@ -90,43 +90,36 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         public ShoppingListViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
+
             buttonDeleteSingleItem.setOnClickListener(this);
-
-
         }
 
         @Override
         public void onClick(View view) {
-            int position = getAdapterPosition();
-            if (view.getId() == buttonDeleteSingleItem.getId()){
-                deleteData(position);
+            mItemClickListener.onItemClick(getAdapterPosition(), mData);
+            if (view.getId() == buttonDeleteSingleItem.getId()) {
+                deleteData(getAdapterPosition());
             }
-
         }
 
+        private void deleteData(int position) {
 
-        private void deleteData(int position){
             ShoppingListModel model = mData.get(position);
-            Uri uri = ShoppingListProvider.ContentUris.SINGLE_ITEM(model.getId());
-            int fb = context.getContentResolver().delete(uri,null,null);
-            L.toast(context,fb);
-            if (fb > 0)
+            Uri uri = ShoppingListContentProvider.ContentUris.SINGLE_ITEM(model.getId());
+            int fb = context.getContentResolver().delete(uri, null, null);
+            if (fb > 0) {
 
-                context.getContentResolver().notifyChange(uri,null);
-            Intent intent = ((Activity) context).getIntent();
-            ((Activity) context).finish();
-            ((Activity) context).overridePendingTransition( 0, 0);
-            context.startActivity(intent);
-            ((Activity) context).overridePendingTransition( 0, 0);
-            RecipesAppWidget.sendRefreshBroadcast(context);
-        }
+                context.getContentResolver().notifyChange(uri, null);
+                N.storeSLPreferences(context, model.getIngredient(), 0);
+                mData.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, getItemCount());
 
-        public void storeSLPreferences(String key, int value) {
-            SharedPreferences preferences = context.getSharedPreferences(DSK, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt(key, value);
-            editor.commit();
+                if (mData.size() == 0) {
+                    N.storeSLPreferences(context, ADD_ALL_KEY, 0);
+                }
+            }
         }
     }
 }

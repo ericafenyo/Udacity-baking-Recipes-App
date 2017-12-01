@@ -1,0 +1,19 @@
+<!--
+  Copyright (C) 2017 Eric Afenyo
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<vector android:height="15dp" android:viewportHeight="426.667"
+    android:viewportWidth="426.667" android:width="15dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#7e7d7d" android:pathData="M213.3,0C95.5,0 0,95.5 0,213.3s95.5,213.3 213.3,213.3S426.7,331.2 426.7,213.3S331.2,0 213.3,0zM213.3,384c-94.3,0 -170.7,-76.4 -170.7,-170.7S119,42.7 213.3,42.7S384,119 384,213.3S307.6,384 213.3,384z"/>
+</vector>

@@ -35,16 +35,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientsActivity extends AppCompatActivity {
+
     private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
 
+    private ArrayList<RecipesModel.Ingredients> mIngredients;
+
     /**
-     * @param context the parent activity of the fragment
-     * @param ingredientsData List of Recipes Ingredients data
-     * @return  new intent capable of starting an activity and transferring data
+     * @param context         context
+     * @param ingredientsData List of Recipes Ingredients
+     * @return new intent capable of starting an activity
      */
     public static Intent newIntent(Context context, List<RecipesModel.Ingredients> ingredientsData) {
         Intent intent = new Intent(context, IngredientsActivity.class);
-        // makes recipes ingredients data available to this class through intent
         intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS,
                 (ArrayList<? extends Parcelable>) ingredientsData);
         return intent;
@@ -55,41 +57,55 @@ public class IngredientsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredients);
 
+        //sets toolbar
         Toolbar toolbar = findViewById(R.id.toolbar_ingredients);
-        if (toolbar != null){
+        if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
 
-        //checks if Fragment is null or not before creating new one
-        //this prevents multiple Fragment creation
-        if (savedInstanceState == null) {
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(R.string.toolbar_ingredients_title);
+        }
 
-//            //inflates the fragment in the activity
+        //retrieve data from bundle
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mIngredients = bundle.getParcelableArrayList(EXTRA_INGREDIENTS);
+        }
+
+        //create new Fragment only if savedInstanceState is null
+        if (savedInstanceState == null) {
             IngredientsFragment fragment = new IngredientsFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
-                    .add(R.id.frame_ingredient_container,fragment)
+                    .add(R.id.frame_ingredient_container, fragment)
                     .commit();
         }
-    }
-
+    }//end of onCreate()
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater  inflater = getMenuInflater();
-        inflater.inflate(R.menu.ingredients_ment,menu);
-
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.shopping_list_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
 
-        switch (item.getItemId()){
             case R.id.action_shopping_list:
-                Intent intent = new Intent(getApplicationContext(),ShoppingListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+                intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS, mIngredients);
                 startActivity(intent);
                 break;
+
         }
         return true;
     }

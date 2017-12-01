@@ -18,15 +18,20 @@ package com.example.eric.bakingrecipes.Utils;
 
 import android.content.Context;
 import android.net.Uri;
+import android.view.View;
+import android.widget.ProgressBar;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -58,24 +63,70 @@ public class Player {
         if (mPlayer == null) {
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
-            LoadControl loadControl = new DefaultLoadControl();
-            mPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
+            mPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
             mPlayerView.setPlayer(mPlayer);
             // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(context, "ClassicalMusicQuiz");
-
-//            if (videoUri == null){
-//                        mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(context.getResources(), R.drawable.ph));
-//            }
-//            else {
-
-
-            MediaSource mediaSource = new ExtractorMediaSource(videoUri, new DefaultDataSourceFactory(
-                    context, userAgent), new DefaultExtractorsFactory(), null, null);
-            mPlayer.prepare(mediaSource);}
-                mPlayer.setPlayWhenReady(true);
-
+            MediaSource mediaSource = new ExtractorMediaSource(videoUri,
+                    new DefaultDataSourceFactory(context, userAgent),
+                    new DefaultExtractorsFactory(), null, null);
+            mPlayer.prepare(mediaSource);
         }
+        mPlayer.setPlayWhenReady(true);
+    }
+
+    /**
+     * display and disable the progressBar based on the player state
+     *
+     * @param progressBar player progressBar
+     */
+    public void checkState(final ProgressBar progressBar) {
+        mPlayer.addListener(new com.google.android.exoplayer2.Player.EventListener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (playbackState == com.google.android.exoplayer2.Player.STATE_READY) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+
+            }
+
+            @Override
+            public void onPositionDiscontinuity() {
+
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+            }
+        });
+    }
+
+
 //    }
 
     /**
@@ -99,7 +150,6 @@ public class Player {
         }
     }
 
-
     /**
      * resume Player.
      */
@@ -109,7 +159,4 @@ public class Player {
             mPlayer.setPlayWhenReady(true);
         }
     }
-
-
-
 }
