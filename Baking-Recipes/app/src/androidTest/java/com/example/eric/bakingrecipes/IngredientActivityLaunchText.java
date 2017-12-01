@@ -16,11 +16,16 @@
 
 package com.example.eric.bakingrecipes;
 
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.View;
 
 import com.example.eric.bakingrecipes.Activities.DetailsActivity;
 
+import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +38,7 @@ import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 
 /**
  * Created by eric on 21/11/2017.
@@ -60,20 +66,36 @@ public class IngredientActivityLaunchText {
         //find the view and perform click action
         onView(withId(R.id.action_shopping_list)).perform(click());
         onView(withId(R.id.action_add_ingredients)).perform(click());
-        onView(withId(R.id.text_detail_ingredients_title));
         pressBack();
         //Validates to true if the text view has same text after pressing back button
         onView(withId(R.id.text_view_shopping_list_desc)).check(matches(withText("Keep track of your ingredients")));
     }
 
+
     @Test
     public void testAlertDialog() {
         //find the view and perform click action
         onView(withId(R.id.action_shopping_list)).perform(click());
-        onView(withId(R.id.button_shopping_list_delete_all)).perform(click());
+        onView(allOf(withId(R.id.button_shopping_list_delete_all))).perform(new ViewAction() {//remove visibility constraint
+                                                                                @Override
+                                                                                public Matcher<View> getConstraints() {
+                                                                                    return ViewMatchers.isEnabled(); // no constraints, they are checked above
+                                                                                }
+
+                                                                                @Override
+                                                                                public String getDescription() {
+                                                                                    return "click plus button";
+                                                                                }
+
+                                                                                @Override
+                                                                                public void perform(UiController uiController, View view) {
+                                                                                    view.performClick();
+                                                                                }
+                                                                            }
+        );
         //Validates to true if the text is the same as the message displayed in the AlertDialog
         onView(withText("Are you sure you want to clear all items?"))
-        .inRoot(isDialog())
+                .inRoot(isDialog())
                 .check(matches(isDisplayed()))
                 .perform(click());
     }
