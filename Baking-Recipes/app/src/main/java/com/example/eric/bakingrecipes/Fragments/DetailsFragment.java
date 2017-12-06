@@ -37,7 +37,6 @@ import com.example.eric.bakingrecipes.Activities.PlayerActivityPhone;
 import com.example.eric.bakingrecipes.Adapters.RecipeStepsAdapter;
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
-import com.example.eric.bakingrecipes.Utils.DividerItemDecoration;
 import com.example.eric.bakingrecipes.Utils.N;
 
 import java.io.Serializable;
@@ -125,6 +124,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
             textViewServingsCount.setText(String.format("Servings %s",
                     String.valueOf(bundle.getInt(SERVINGS))));
             textViewDetailRecipeTitle.setText(String.format(bundle.getString(RECIPE_NAME)));
+
             //specifying an Adapter
             RecipeStepsAdapter adapter = new RecipeStepsAdapter(getActivity(),
                     mSteps, this);
@@ -137,10 +137,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
             //improve performance
             recyclerView.setHasFixedSize(true);
             recyclerView.setFocusable(false);
-            //custom RecyclerView ItemDecoration
-            recyclerView.addItemDecoration(
-                    new DividerItemDecoration(getActivity(),
-                            getActivity().getDrawable(R.drawable.item_decorator)));
+
         }
         //open details view for the first item in the recyclerView when device is a tablet and in landscape mode
         if (isTablet) {
@@ -169,26 +166,30 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-        if (N.getSLPreferences(getActivity(), "MST_KEY", 0) == 1) {
-            if (isTablet) {
-                if (getActivity().getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE) {
 
-                    new Handler().postDelayed(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            recyclerView.findViewHolderForAdapterPosition(N.getSLPreferences(getActivity(), "CLICK_POSITION_KEY", 0)).itemView.performClick();
-                        }
-                    }, 10);
-                }
-            }
-        }
-    }
+
+    //    @Override
+//    public void onResume() {
+//        super.onResume();
+//        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+//        if (N.getSLPreferences(getActivity(), "MST_KEY", 0) == 1) {
+//            if (isTablet) {
+//                if (getActivity().getResources().getConfiguration().orientation ==
+//                        Configuration.ORIENTATION_LANDSCAPE) {
+//
+//                    new Handler().postDelayed(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            recyclerView.findViewHolderForAdapterPosition(N.getSLPreferences(getActivity(), "CLICK_POSITION_KEY", 0)).itemView.performClick();
+//                        }
+//                    }, 10);
+//                }
+//            }
+//        }
+//    }
+
 
     private void executeIntent(int position) {
         Intent intent = new Intent(getContext(), PlayerActivityPhone.class);
@@ -202,34 +203,33 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.button_ingredients_list_launcher:
 
-        //verify type of device (returns true for a Tablet and false for a Handset)
-        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-        if (!isTablet) {
-            Intent intent = IngredientsActivity.newIntent(getActivity(), mIngredients);
-            startActivity(intent);
-        } else {
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                Intent intent = IngredientsActivity.newIntent(getActivity(), mIngredients);
-                startActivity(intent);
-            } else {
-                IngredientsFragment fragment = IngredientsFragment.newFragment(mIngredients);
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                manager.beginTransaction()
-                        .replace(R.id.frame_player_container, fragment)
-                        .addToBackStack(TAG_INGREDIENT)
-                        .commit();
-            }
-        }
+                //verify type of device (returns true for a Tablet and false for a Handset)
+                boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+                if (!isTablet) {
+                    Intent intent = IngredientsActivity.newIntent(getActivity(), mIngredients);
+                    startActivity(intent);
+                } else {
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        Intent intent = IngredientsActivity.newIntent(getActivity(), mIngredients);
+                        startActivity(intent);
+                    } else {
+                        IngredientsFragment fragment = IngredientsFragment.newFragment(mIngredients);
+                        FragmentManager manager = getActivity().getSupportFragmentManager();
+                        manager.beginTransaction()
+                                .replace(R.id.frame_player_container, fragment)
+                                .addToBackStack(TAG_INGREDIENT)
+                                .commit();
+                    }
+                }
 
                 break;
             case R.id.button_detail_share:
 
                 StringBuilder sb = new StringBuilder();
-                for (RecipesModel.Ingredients s : mIngredients)
-                {
+                for (RecipesModel.Ingredients s : mIngredients) {
                     String string = s.getIngredient();
                     sb.append(string + "\n");
                 }
@@ -240,7 +240,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
 
-            break;
+                break;
         }
     }
 
@@ -262,14 +262,10 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
         } else {
             Fragment playerFragment = PagerPlayerFragment.newFragment(shortDescription, description, videoURL);
             FragmentManager manager = getActivity().getSupportFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.frame_player_container, playerFragment, "TAG_PLAYER")
+                    .commit();
 
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                executeIntent(position);
-            } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                manager.beginTransaction()
-                        .replace(R.id.frame_player_container, playerFragment, "TAG_PLAYER")
-                        .commit();
-            }
         }
     }
 }

@@ -25,18 +25,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/headset_horizontal_spacing"
-        android:src="@drawable/ic_circle"
-        android:contentDescription="@string/content_description" />
+        android:layout_marginStart="@dimen/margin_size_normal"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/ic_circle" />
 
     <TextView
         android:id="@+id/text_view_shopping_list_ingredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/headset_horizontal_spacing"
-        android:paddingBottom="@dimen/headset_horizontal_spacing"
-        android:paddingTop="@dimen/headset_horizontal_spacing"
+        android:layout_marginStart="@dimen/margin_size_normal"
+        android:paddingBottom="@dimen/margin_size_normal"
+        android:paddingTop="@dimen/margin_size_normal"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:textSize="20sp"
         tools:text="carrot" />

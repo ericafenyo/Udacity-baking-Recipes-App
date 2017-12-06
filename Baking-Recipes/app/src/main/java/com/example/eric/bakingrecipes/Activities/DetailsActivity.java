@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import com.example.eric.bakingrecipes.Fragments.DetailsFragment;
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.N;
 
 import java.util.ArrayList;
 
@@ -72,6 +73,22 @@ public class DetailsActivity extends AppCompatActivity {
                     .commit();
         }
     }//end of onCreate()
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (isFinishing()) {
+            N.storeSLPreferences(getApplicationContext(), "MST_KEY", 0);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            N.storeSLPreferences(getApplicationContext(), "MST_KEY", 0);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

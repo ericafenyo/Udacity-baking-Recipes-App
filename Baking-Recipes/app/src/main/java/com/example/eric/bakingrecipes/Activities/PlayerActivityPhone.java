@@ -90,6 +90,7 @@ public class PlayerActivityPhone extends AppCompatActivity implements View.OnCli
         nextButton.setOnClickListener(this);
     }
 
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

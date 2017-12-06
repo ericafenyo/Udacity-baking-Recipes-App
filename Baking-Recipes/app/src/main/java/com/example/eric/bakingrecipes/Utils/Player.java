@@ -47,6 +47,9 @@ public class Player {
     private SimpleExoPlayer mPlayer;
     private SimpleExoPlayerView mPlayerView;
     private Uri videoUri;
+    private TrackSelector trackSelector;
+    private int resumeWindow;
+    private long resumePosition;
 
     public Player(Context context, SimpleExoPlayer mPlayer, SimpleExoPlayerView mPlayerView, Uri videoUri) {
         this.context = context;
@@ -59,10 +62,9 @@ public class Player {
      * Initialize ExoPlayer.
      */
     public void initialize() {
-
         if (mPlayer == null) {
             // Create an instance of the ExoPlayer.
-            TrackSelector trackSelector = new DefaultTrackSelector();
+            trackSelector = new DefaultTrackSelector();
             mPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
             mPlayerView.setPlayer(mPlayer);
             // Prepare the MediaSource.
@@ -72,6 +74,12 @@ public class Player {
                     new DefaultExtractorsFactory(), null, null);
             mPlayer.prepare(mediaSource);
         }
+//        boolean haveResumePosition = resumeWindow != C.INDEX_UNSET;
+//        if (haveResumePosition) {
+//            mPlayer.seekTo(resumeWindow, resumePosition);
+//        }
+        updateResumePosition();
+        mPlayer.seekTo(resumePosition);
         mPlayer.setPlayWhenReady(false);
     }
 
@@ -135,8 +143,10 @@ public class Player {
     public void release() {
         if (mPlayer != null) {
             mPlayer.stop();
+            updateResumePosition();
             mPlayer.release();
             mPlayer = null;
+            trackSelector = null;
         }
     }
 
@@ -145,8 +155,8 @@ public class Player {
      */
     public void pause() {
         if (mPlayer != null) {
-            mPlayer.setPlayWhenReady(false);
             mPlayer.getPlaybackState();
+            mPlayer.setPlayWhenReady(false);
         }
     }
 
@@ -158,5 +168,11 @@ public class Player {
             mPlayer.getPlaybackState();
             mPlayer.setPlayWhenReady(true);
         }
+    }
+
+    private void updateResumePosition() {
+        resumeWindow = mPlayer.getCurrentWindowIndex();
+        N.log(resumePosition);
+        resumePosition = Math.max(0, mPlayer.getContentPosition());
     }
 }

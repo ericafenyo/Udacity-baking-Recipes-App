@@ -17,14 +17,17 @@
 package com.example.eric.bakingrecipes.Adapters;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.GlideApp;
 
 import java.util.List;
 
@@ -41,6 +44,7 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
     private Context mContext;
     private List<RecipesModel.Steps> mData;
     private onItemSelectListener mOnItemSelectListener;
+
 
     public RecipeStepsAdapter(Context context, List<RecipesModel.Steps> mData, onItemSelectListener mOnItemSelectListener) {
         this.mContext = context;
@@ -65,8 +69,18 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
 
         RecipesModel.Steps steps = mData.get(position);
         holder.stepShortDescription.setText(steps.getShortDescription());
+//        N.log(steps.getThumbnailURL();
+        GlideApp.with(mContext)
+                .load(steps.getThumbnailURL())
+                .placeholder(new ColorDrawable(mContext.getResources()
+                        .getColor(R.color.colorAccent)))
+                //handling errors using glide
+                .error(new ColorDrawable(mContext.getResources()
+                        .getColor(R.color.colorAccent)))
+                .into(holder.ImageViewThumbnailURL);
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -77,6 +91,8 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
 
         @BindView(R.id.text_steps_short_description)
         TextView stepShortDescription;
+        @BindView(R.id.image_view_steps)
+        ImageView ImageViewThumbnailURL;
 
         public StepsViewHolder(View itemView) {
             super(itemView);

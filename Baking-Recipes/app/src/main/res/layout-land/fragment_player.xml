@@ -13,6 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+
+<!--<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:app="http://schemas.android.com/apk/res-auto"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--xmlns:tools="http://schemas.android.com/tools">-->
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,6 +26,7 @@
         android:id="@+id/player_recipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,10 +35,10 @@
         android:id="@+id/progress_bar_player"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="@dimen/margin_size_small"
+        android:layout_marginEnd="@dimen/margin_size_small"
+        android:layout_marginLeft="@dimen/margin_size_normal"
+        android:layout_marginTop="@dimen/margin_size_normal"
         app:layout_constraintBottom_toTopOf="@+id/text_short_player_description"
         app:layout_constraintEnd_toEndOf="@+id/player_recipes"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -44,8 +48,8 @@
         android:id="@+id/text_short_player_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textSize="24sp"
+        android:padding="@dimen/padding_size_normal"
+        android:textSize="@dimen/text_size_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/player_recipes"
@@ -54,8 +58,8 @@
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorGray"
+        android:layout_height="0.2dp"
+        android:background="@color/colorLightGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_short_player_description" />
@@ -64,10 +68,11 @@
         android:id="@+id/text_player_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        tools:text="Add water"
+        android:layout_margin="@dimen/margin_size_normal"
+        android:paddingBottom="@dimen/padding_size_extra_extra_large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view" />
+        app:layout_constraintTop_toBottomOf="@id/view"
+        tools:text="Add water" />
 
-</android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout><!--</android.support.v4.widget.NestedScrollView>-->

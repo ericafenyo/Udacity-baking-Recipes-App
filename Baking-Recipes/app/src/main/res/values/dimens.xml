@@ -14,9 +14,41 @@
   limitations under the License.
   -->
 <resources>
-    <dimen name="headset_horizontal_spacing">16dp</dimen>
-    <dimen name="headset_vertical_spacing">8dp</dimen>
+
+    <!--widget-->
     <dimen name="widget_margin">8dp</dimen>
-    <dimen name="headset_horizontal_gap">8dp</dimen>
-    <dimen name="exo_player_height">320dp</dimen>
+
+    <!--padding-->
+    <dimen name="padding_size_extra_small">4dp</dimen>
+    <dimen name="padding_size_small">8dp</dimen>
+    <dimen name="padding_size_normal">16dp</dimen>
+    <dimen name="padding_size_medium">24dp</dimen>
+    <dimen name="padding_size_large">32dp</dimen>
+    <dimen name="padding_size_extra_large">48dp</dimen>
+    <dimen name="padding_size_extra_extra_large">56dp</dimen>
+
+    <!--margin-->
+    <dimen name="margin_size_extra_small">4dp</dimen>
+    <dimen name="margin_size_small">8dp</dimen>
+    <dimen name="margin_size_normal">16dp</dimen>
+    <dimen name="margin_size_medium">24dp</dimen>
+    <dimen name="margin_size_large">32dp</dimen>
+    <dimen name="margin_size_extra_large">48dp</dimen>
+    <dimen name="margin_size_extra_extra_large">56dp</dimen>
+
+    <!--text-->
+    <dimen name="text_size_extra_small">4sp</dimen>
+    <dimen name="text_size_small">8sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_medium">24sp</dimen>
+    <dimen name="text_size_large">32sp</dimen>
+    <dimen name="text_size_extra_large">48sp</dimen>
+    <dimen name="text_size_extra_extra_large">56sp</dimen>
+
+    <!--size_bis-->
+    <dimen name="size_normal_bis">16dp</dimen>
+    <dimen name="exo_player_height">230dp</dimen>
+    <dimen name="step_root_height">200dp</dimen>
+    <dimen name="step_text_size">20sp</dimen>
+    <dimen name="detail_recipe_name_text_size">25sp</dimen>
 </resources>

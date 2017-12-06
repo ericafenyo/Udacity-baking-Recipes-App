@@ -25,6 +25,7 @@
     <item name="pink" type="color">#E91E63</item>
     <item name="darkPurple" type="color">#673AB7</item>
     <item name="blueGray" type="color">#607D8B</item>
+    <item name="lightBlueGray" type="color">#7ca2b4</item>
 
     <!--array of colors-->
     <integer-array name="colorArray">
@@ -37,5 +38,6 @@
     <item>@color/darkPurple</item>
     <item>@color/blueGray</item>
     <item>@color/pink</item>
+        <item>@color/lightBlueGray</item>
     </integer-array>
 </resources>

@@ -15,6 +15,10 @@
   limitations under the License.
   -->
 <resources>
-    <dimen name="exo_player_height">340dp</dimen>
-    <dimen name="exp_player_height_land">360dp</dimen>
+    <!--size_bis-->
+    <dimen name="exo_player_height">200dp</dimen>
+    <dimen name="step_root_height">200dp</dimen>
+    <dimen name="step_text_size">14sp</dimen>
+    <dimen name="detail_recipe_name_text_size">20sp</dimen>
+    <dimen name="size_normal_bis">8dp</dimen>
 </resources>

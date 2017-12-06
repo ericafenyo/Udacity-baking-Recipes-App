@@ -17,14 +17,17 @@
 package com.example.eric.bakingrecipes.Adapters;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.GlideApp;
 
 import java.util.List;
 
@@ -63,6 +66,13 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.RecipesVie
         RecipesModel recipes = mData.get(position);
         holder.textRecipeName.setText(recipes.getName());
         holder.textStepCount.setText(String.valueOf(mData.get(position).getSteps().size() + " steps"));
+
+        GlideApp.with(mContext)
+                .load(recipes.getImage())
+                .placeholder(new ColorDrawable(mContext.getResources().getColor(R.color.colorPrimaryDark)))
+                //handling errors using glide
+                .error(new ColorDrawable(mContext.getResources().getColor(R.color.colorPrimaryDark)))
+                .into(holder.imageViewImage);
     }
 
     @Override
@@ -77,6 +87,8 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.RecipesVie
         TextView textRecipeName;
         @BindView(R.id.text_view_main_steps)
         TextView textStepCount;
+        @BindView(R.id.view_main)
+        ImageView imageViewImage;
 
         public RecipesViewHolder(View itemView) {
             super(itemView);

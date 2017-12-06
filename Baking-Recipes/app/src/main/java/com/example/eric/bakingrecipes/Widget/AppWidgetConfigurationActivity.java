@@ -35,6 +35,7 @@ import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
 import com.example.eric.bakingrecipes.Utils.MySingleton;
 import com.example.eric.bakingrecipes.Utils.N;
+import com.example.eric.bakingrecipes.Utils.ParseJson;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -85,7 +86,11 @@ public class AppWidgetConfigurationActivity extends AppCompatActivity implements
                 BuildConfig.JsonUrl, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                mRecipes = parseJson(response);
+
+                //deserialization
+                Type type = new TypeToken<List<RecipesModel>>() {}.getType();
+                mRecipes  =  ParseJson.deSerializeList(String.valueOf(response),type);
+
                 mAdapter = new AppWidgetConfigurationAdapter(
                         AppWidgetConfigurationActivity.this,
                         AppWidgetConfigurationActivity.this);

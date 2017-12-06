@@ -32,18 +32,20 @@ public class RecipesModel implements Parcelable{
     private int servings;
     private List<Ingredients> ingredients;
     private List<Steps> steps;
+    private String image;
 
     //Constructors
     public RecipesModel() {
         //should be empty
     }
 
-    public RecipesModel(int id, String name, int servings, List<Ingredients> ingredients, List<Steps> steps) {
+    public RecipesModel(int id, String name, int servings, List<Ingredients> ingredients, List<Steps> steps, String image) {
         this.id = id;
         this.name = name;
         this.servings = servings;
         this.ingredients = ingredients;
         this.steps = steps;
+        this.image = image;
     }
 
     //RecipesModel Parcelable
@@ -76,6 +78,7 @@ public class RecipesModel implements Parcelable{
         parcel.writeInt(id);
         parcel.writeString(name);
         parcel.writeInt(servings);
+        parcel.writeString(image);
 
         //Adding InnerClasses
 //        parcel.writeParcelable((Parcelable) ingredients,i);
@@ -219,5 +222,9 @@ public class RecipesModel implements Parcelable{
 
     public List<Steps> getSteps() {
         return steps;
+    }
+
+    public String getImage() {
+        return image;
     }
 }

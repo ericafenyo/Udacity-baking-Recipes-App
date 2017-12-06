@@ -50,11 +50,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="54dp"
+            android:layout_marginEnd="@dimen/margin_size_small"
+            android:layout_marginStart="@dimen/margin_size_small"
+            android:layout_marginTop="@dimen/margin_size_extra_extra_large"
             android:text="@string/no_connection_error"
-            android:textSize="24sp"
+            android:textSize="@dimen/text_size_medium"
             android:visibility="invisible" />
 
         <Button

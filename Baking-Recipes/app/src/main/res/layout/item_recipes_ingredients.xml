@@ -26,17 +26,17 @@
         android:layout_marginStart="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
+        android:contentDescription="@string/content_description"
         android:focusable="true"
         android:padding="6dp"
-        android:src="@drawable/ic_add"
-        android:contentDescription="@string/content_description" />
+        android:src="@drawable/ic_add" />
 
     <TextView
         android:id="@+id/text_detail_ingredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="@dimen/headset_horizontal_spacing"
+        android:layout_marginStart="@dimen/margin_size_normal"
         android:layout_marginTop="14dp"
         android:layout_toEndOf="@id/button_add_to_cart"
         android:textSize="15sp"
