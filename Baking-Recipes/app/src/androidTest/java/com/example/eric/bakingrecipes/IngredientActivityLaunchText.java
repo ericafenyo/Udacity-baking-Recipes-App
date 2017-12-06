@@ -54,7 +54,7 @@ public class IngredientActivityLaunchText {
     }
 
     @Test
-    public void testAlertButton() {
+    public void testActionButton() {
         //find the view and perform click action
         onView(withId(R.id.action_shopping_list)).perform(click());
         onView(withId(R.id.action_add_ingredients)).perform(click());
@@ -62,4 +62,48 @@ public class IngredientActivityLaunchText {
         //Validates to true if the text view has same text after pressing back button
         onView(withId(R.id.text_view_shopping_list_desc)).check(matches(withText("Keep track of your ingredients")));
     }
+<<<<<<< HEAD
 }
+=======
+
+
+
+
+    @Test
+    public void testAlertDialog() {
+                        performActionDialogTest();
+            }
+
+
+    /**
+     * perform test on AlertDialog
+     */
+    public void performAlertDialogTest(){
+        //find the view and perform click action
+        onView(withId(R.id.action_shopping_list)).perform(click());
+        onView(allOf(withId(R.id.button_shopping_list_delete_all))).perform(new ViewAction() {//remove visibility constraint
+                                                                                @Override
+                                                                                public Matcher<View> getConstraints() {
+                                                                                    return ViewMatchers.isEnabled(); // no constraints, they are checked above
+                                                                                }
+
+                                                                                @Override
+                                                                                public String getDescription() {
+                                                                                    return "click plus button";
+                                                                                }
+
+                                                                                @Override
+                                                                                public void perform(UiController uiController, View view) {
+                                                                                    view.performClick();
+                                                                                }
+                                                                            }
+        );
+        //Validates to true if the text is the same as the message displayed in the AlertDialog
+        onView(withText("Are you sure you want to clear all items?"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+                .perform(click());
+    }
+
+}
+>>>>>>> ca94e4a8a897ee9b4b27a6bcaa75c8cebd4e1378
