@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Eric Afenyo
+ * Copyright (C) 2018 Eric Afenyo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.example.eric.bakingrecipes.Utils;
+package com.example.eric.bakingrecipes.di;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 
 /**
- * Created by eric on 05/12/2017.
+ * An Empty class that generates Glide modules
  */
 
 @GlideModule
-public class MyAppGlideModule extends AppGlideModule {
+public class GlideAppModule extends AppGlideModule {
 }

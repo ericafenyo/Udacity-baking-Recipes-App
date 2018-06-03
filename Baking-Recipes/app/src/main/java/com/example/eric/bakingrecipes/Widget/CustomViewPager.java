@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.eric.bakingrecipes;
+package com.example.eric.bakingrecipes.Widget;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

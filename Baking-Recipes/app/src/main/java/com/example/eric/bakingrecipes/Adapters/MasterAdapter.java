@@ -27,7 +27,8 @@ import android.widget.TextView;
 
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
-import com.example.eric.bakingrecipes.Utils.GlideApp;
+import com.example.eric.bakingrecipes.di.GlideApp;
+
 
 import java.util.List;
 
