@@ -36,6 +36,16 @@
     <dimen name="margin_size_extra_large">48dp</dimen>
     <dimen name="margin_size_extra_extra_large">56dp</dimen>
 
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - Custom margin and padding.                                                                  -
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <dimen name="margin_padding_extra_small">4dp</dimen>
+    <dimen name="margin_padding_small">8dp</dimen>
+    <dimen name="margin_padding_normal">16dp</dimen>
+    <dimen name="margin_padding_large">24dp</dimen>
+    <dimen name="margin_padding_extra_large">32dp</dimen>
+    <dimen name="margin_padding_extra_extra_large">80dp</dimen>
+
     <!--text-->
     <dimen name="text_size_extra_small">4sp</dimen>
     <dimen name="text_size_small">8sp</dimen>
@@ -51,4 +61,6 @@
     <dimen name="step_root_height">200dp</dimen>
     <dimen name="step_text_size">20sp</dimen>
     <dimen name="detail_recipe_name_text_size">25sp</dimen>
+    <dimen name="material_card_elevation">1dp</dimen>
+    <string name="aspect_ratio_square">1</string>
 </resources>

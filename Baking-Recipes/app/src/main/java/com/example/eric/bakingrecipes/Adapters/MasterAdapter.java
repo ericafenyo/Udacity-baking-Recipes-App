@@ -67,13 +67,6 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.RecipesVie
         RecipesModel recipes = mData.get(position);
         holder.textRecipeName.setText(recipes.getName());
         holder.textStepCount.setText(String.valueOf(mData.get(position).getSteps().size() + " steps"));
-
-        GlideApp.with(mContext)
-                .load(recipes.getImage())
-                .placeholder(new ColorDrawable(mContext.getResources().getColor(R.color.colorPrimaryDark)))
-                //handling errors using glide
-                .error(new ColorDrawable(mContext.getResources().getColor(R.color.colorPrimaryDark)))
-                .into(holder.imageViewImage);
     }
 
     @Override
@@ -88,8 +81,6 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.RecipesVie
         TextView textRecipeName;
         @BindView(R.id.text_view_main_steps)
         TextView textStepCount;
-        @BindView(R.id.view_main)
-        ImageView imageViewImage;
 
         public RecipesViewHolder(View itemView) {
             super(itemView);

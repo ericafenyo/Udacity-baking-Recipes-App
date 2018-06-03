@@ -18,70 +18,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginTop="8dp"
-    app:cardCornerRadius="5dp">
+    android:layout_margin="@dimen/margin_padding_extra_small"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="@dimen/material_card_elevation">
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/view_main"
+            android:id="@+id/image_recipe_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/gradient"
-            android:contentDescription="@string/content_description"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <ImageView
-            android:id="@+id/camera_d_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/content_description"
-            android:src="@drawable/ic_camera_diaphragm"
-            app:layout_constraintBottom_toBottomOf="@+id/view_main"
-            app:layout_constraintEnd_toEndOf="@+id/view_main"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder"
+            app:layout_constraintDimensionRatio="@string/aspect_ratio_square"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view_main" />
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/text_master_recipe_name"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            tools:text="Chocolate Tart"
-            android:textColor="#fff"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/text_view_main_steps"
+            android:layout_marginTop="@dimen/margin_padding_normal"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            tools:layout_marginStart="16dp" />
+            app:layout_constraintTop_toBottomOf="@+id/image_recipe_thumbnail"
+            tools:layout_marginStart="16dp"
+            tools:text="Chocolate Tart" />
 
         <TextView
             android:id="@+id/text_view_main_steps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:textColor="#fff"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:layout_marginBottom="@dimen/margin_padding_normal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/text_master_recipe_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_master_recipe_name"
             tools:text="08 Steps" />
 
     </android.support.constraint.ConstraintLayout>

@@ -22,6 +22,7 @@
     <string name="toolbar_shopping_list_title">Shopping List</string>
     <string name="keep_track_of_your_ingredients">Keep track of your ingredients</string>
     <string name="recipe_steps">RECIPE STEPS</string>
+    <!--TODO: set content description-->
     <string name="content_description">contentDescription</string>
     <string name="no_connection_error">No Connection</string>
     <string name="retry_button_text">Retry</string>

@@ -13,59 +13,68 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#1cf3a183"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <!--Toolbar>-->
     <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:id="@+id/appbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
 
         <include
             android:id="@+id/toolbar_master"
             layout="@layout/toolbar" />
+
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
 
-        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/recyclerView_fragment_master_list"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/progress_bar_master"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="visible" />
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/recyclerView_fragment_master_list"
+                android:layout_width="match_parent"
+                android:paddingEnd="@dimen/margin_padding_extra_small"
+                android:paddingStart="@dimen/margin_padding_extra_small"
+                android:paddingTop="@dimen/margin_padding_small"
+                android:paddingBottom="@dimen/margin_padding_small"
+                android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@+id/text_view_network_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/margin_size_small"
-            android:layout_marginStart="@dimen/margin_size_small"
-            android:layout_marginTop="@dimen/margin_size_extra_extra_large"
-            android:text="@string/no_connection_error"
-            android:textSize="@dimen/text_size_medium"
-            android:visibility="invisible" />
+            <ProgressBar
+                android:id="@+id/progress_bar_master"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="visible" />
 
-        <Button
-            android:id="@+id/button_retry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="100dp"
-            android:onClick="onRetry"
-            android:text="@string/retry_button_text"
-            android:visibility="invisible" />
+            <TextView
+                android:id="@+id/text_view_network_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/margin_size_small"
+                android:layout_marginStart="@dimen/margin_size_small"
+                android:layout_marginTop="@dimen/margin_size_extra_extra_large"
+                android:text="@string/no_connection_error"
+                android:textSize="@dimen/text_size_medium"
+                android:visibility="invisible" />
 
-    </FrameLayout>
-</LinearLayout>
+            <Button
+                android:id="@+id/button_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"
+                android:onClick="onRetry"
+                android:text="@string/retry_button_text"
+                android:visibility="invisible" />
+        </FrameLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

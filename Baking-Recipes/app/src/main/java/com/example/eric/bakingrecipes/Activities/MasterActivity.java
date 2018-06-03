@@ -45,10 +45,10 @@ import com.example.eric.bakingrecipes.Adapters.MasterAdapter;
 import com.example.eric.bakingrecipes.BuildConfig;
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
+import com.example.eric.bakingrecipes.Utils.ItemOffsetDecoration;
 import com.example.eric.bakingrecipes.Utils.MySingleton;
 import com.example.eric.bakingrecipes.Utils.N;
 import com.example.eric.bakingrecipes.Utils.ParseJson;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -62,6 +62,7 @@ import butterknife.ButterKnife;
 
 
 public class MasterActivity extends AppCompatActivity implements MasterAdapter.onItemSelectListener {
+    private static final String LOG_TAG = MasterActivity.class.getName();
 
     private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
     private static final String EXTRA_STEPS = "EXTRA_STEPS";
@@ -70,17 +71,13 @@ public class MasterActivity extends AppCompatActivity implements MasterAdapter.o
     private static final String RECIPE_NAME = "RECIPE_NAME";
     private static final String SERVINGS = "SERVINGS";
 
-//    private MasterAdapter mAdapter;
+    //    private MasterAdapter mAdapter;
     private List<RecipesModel> mRecipes;
 
-    @BindView(R.id.recyclerView_fragment_master_list)
-    RecyclerView recyclerView;
-    @BindView(R.id.text_view_network_info)
-    TextView textViewNetworkInfo;
-    @BindView(R.id.progress_bar_master)
-    ProgressBar progressBar;
-    @BindView(R.id.button_retry)
-    Button buttonRetry;
+    @BindView(R.id.recyclerView_fragment_master_list) RecyclerView recyclerView;
+    @BindView(R.id.text_view_network_info) TextView textViewNetworkInfo;
+    @BindView(R.id.progress_bar_master) ProgressBar progressBar;
+    @BindView(R.id.button_retry) Button buttonRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,17 +85,17 @@ public class MasterActivity extends AppCompatActivity implements MasterAdapter.o
         setContentView(R.layout.activity_master);
         ButterKnife.bind(this);
 
-        //sets toolbar
         Toolbar toolbar = findViewById(R.id.toolbar_master);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
         }
 
         //make network call only if recipe data is null;
         if (savedInstanceState != null) {
             mRecipes = savedInstanceState.getParcelableArrayList(BUNDLED_RECIPES);
             progressBar.setVisibility(View.INVISIBLE);
-            setAdapter(recyclerView);
+            setUpRecyclerViewAdapter(recyclerView);
             setLayoutManager(recyclerView);
             if (mRecipes == null) {
                 hideData();
@@ -107,7 +104,7 @@ public class MasterActivity extends AppCompatActivity implements MasterAdapter.o
             //requests and parse Recipes Json from the net
             loadJson();
         }
-    }//end of onCreate()
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -122,16 +119,13 @@ public class MasterActivity extends AppCompatActivity implements MasterAdapter.o
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-
             case R.id.action_shopping_list:
                 Intent intent = new Intent(getApplicationContext(), ShoppingListActivity.class);
-                for (int i = 0; i < mRecipes.size();i++){
+                for (int i = 0; i < mRecipes.size(); i++) {
                     List<RecipesModel.Ingredients> mIngredients = mRecipes.get(i).getIngredients();
                     intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS, (ArrayList<? extends Parcelable>) mIngredients);
                 }
@@ -145,7 +139,7 @@ public class MasterActivity extends AppCompatActivity implements MasterAdapter.o
 
     /**
      * make network calls using Google's Volley Library.
-     * {@link #parseJson(JSONArray)} parses the network response
+     * {@link ParseJson#deSerializeList(String, Type)} parses the network response
      */
     private void loadJson() {
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET,
@@ -153,58 +147,53 @@ public class MasterActivity extends AppCompatActivity implements MasterAdapter.o
             @Override
             public void onResponse(JSONArray response) {
                 showData();//hide progress bar
-
                 //deserialization
-                Type type = new TypeToken<List<RecipesModel>>() {}.getType();
-                mRecipes  =  ParseJson.deSerializeList(String.valueOf(response),type);
-
-                setAdapter(recyclerView);
+                deserializeJsonResponse(response);
+                setUpRecyclerViewAdapter(recyclerView);
                 setLayoutManager(recyclerView);
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof NoConnectionError || error instanceof TimeoutError) {
-                    Log.e("NoConnectionError", error.toString());
-                    hideData();
-                } else if (error instanceof ServerError) {
-                    Log.e("ServerError", error.toString());
-                    textViewNetworkInfo.setText(R.string.server_info);
-                    textViewNetworkInfo.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.INVISIBLE);
-                    recyclerView.setVisibility(View.INVISIBLE);
-                    buttonRetry.setVisibility(View.INVISIBLE);
-                }
+                handleError(error);
             }
         });
         //add arrayRequest to RequestQueue
         MySingleton.getInstance(this).addToRequestQueue(arrayRequest);
     }
 
-    /**
-     * uses Google's Gson to parse the json "response"
-     *
-     * @param response the JsonArray from the network call
-     * @return list of Recipes using a schema from the RecipeModel class
-     */
-    private List<RecipesModel> parseJson(JSONArray response) {
-        List<RecipesModel> recipesList;
-        Gson gson = new Gson();
-        //gets the Type of data to be returned
+    private void deserializeJsonResponse(JSONArray response) {
         Type type = new TypeToken<List<RecipesModel>>() {
         }.getType();
-        //deserialization
-        recipesList = gson.fromJson(String.valueOf(response), type);
-        return recipesList;
+        mRecipes = ParseJson.deSerializeList(String.valueOf(response), type);
     }
+
+    private void handleError(VolleyError error) {
+        if (error instanceof NoConnectionError || error instanceof TimeoutError) {
+            Log.e(LOG_TAG, error.toString());
+            hideData();
+        } else if (error instanceof ServerError) {
+            Log.e(LOG_TAG, error.toString());
+            displayRetryButton();
+        }
+    }
+
+    private void displayRetryButton() {
+        textViewNetworkInfo.setText(R.string.server_info);
+        textViewNetworkInfo.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+        buttonRetry.setVisibility(View.INVISIBLE);
+    }
+
 
     /**
      * specifies an Adapter for the RecyclerView
      *
      * @param recyclerView RecyclerView
      */
-    private void setAdapter(RecyclerView recyclerView) {
+    private void setUpRecyclerViewAdapter(RecyclerView recyclerView) {
         MasterAdapter adapter = new MasterAdapter(this, mRecipes, this);
         recyclerView.setAdapter(adapter);
         //improve performance
@@ -225,11 +214,11 @@ public class MasterActivity extends AppCompatActivity implements MasterAdapter.o
             if (getResources().getConfiguration().orientation ==
                     Configuration.ORIENTATION_PORTRAIT) {
                 //use a LinearLayoutManager for portrait orientation mode
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
             } else if (getResources().getConfiguration().orientation ==
                     Configuration.ORIENTATION_LANDSCAPE) {
                 //use a GridLayoutManager for landscape orientation mode
-                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
             }
         } else {
             //LayoutManager Configuration for Tablet devices
@@ -243,6 +232,9 @@ public class MasterActivity extends AppCompatActivity implements MasterAdapter.o
                 recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
             }
         }
+
+        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(8);
+//        recyclerView.addItemDecoration(itemDecoration);
     }
 
     @Override
