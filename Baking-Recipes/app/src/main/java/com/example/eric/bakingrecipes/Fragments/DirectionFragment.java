@@ -29,8 +29,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.eric.bakingrecipes.Activities.IngredientsActivity;
 import com.example.eric.bakingrecipes.Activities.PlayerActivityPhone;
@@ -51,7 +49,7 @@ import butterknife.ButterKnife;
  * This test does not support tablet landscape mode
  */
 
-public class DetailsFragment extends Fragment implements View.OnClickListener, RecipeStepsAdapter.onItemSelectListener {
+public class DirectionFragment extends Fragment implements View.OnClickListener, RecipeStepsAdapter.onItemSelectListener {
 
     private static final String EXTRA_STEPS = "EXTRA_STEPS";
     private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
@@ -63,7 +61,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
     private static final String POSITION = "POSITION";
     private static final String RECIPE_NAME = "RECIPE_NAME";
     private static final String SERVINGS = "SERVINGS";
-    private static final String TAG_INGREDIENT = "TAG_INGREDIENT";
     private static final String MST_KEY = "MST_KEY";
 
     private String shortDescription;
@@ -72,27 +69,18 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
     private List<RecipesModel.Steps> mSteps = new ArrayList<>();
     private List<RecipesModel.Ingredients> mIngredients = new ArrayList<>();
 
-//    @BindView(R.id.button_ingredients_list_launcher)
-//    TextView buttonLaunchIngredient;
-//    @BindView(R.id.recyclerView_detail_steps)
-//    RecyclerView recyclerView;
-//    @Nullable
-//    @BindView(R.id.text_view_detail_no_of_servings)
-//    TextView textViewServingsCount;
-//    @Nullable
-//    @BindView(R.id.text_view_detail_recipe_title)
-//    TextView textViewDetailRecipeTitle;
-//    @BindView(R.id.button_detail_share)
-//    ImageView buttonShare;
+
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+
 
     /**
      * @param stepsData       list of recipe steps
      * @param ingredientsData list of recipe ingredients
      * @return instance of DetailsFragment
      */
-    public static DetailsFragment newFragment(List<RecipesModel.Steps> stepsData,
-                                              List<RecipesModel.Ingredients> ingredientsData) {
-        DetailsFragment fragment = new DetailsFragment();
+    public static DirectionFragment newFragment(List<RecipesModel.Steps> stepsData,
+                                                List<RecipesModel.Ingredients> ingredientsData) {
+        DirectionFragment fragment = new DirectionFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(BUNDLED_STEPS, (ArrayList<? extends Parcelable>) stepsData);
         args.putParcelableArrayList(BUNDLED_INGREDIENTS,
@@ -102,7 +90,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
     }
 
     //Constructor
-    public DetailsFragment() {
+    public DirectionFragment() {
         //should be empty
     }
 
@@ -110,7 +98,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        View view = inflater.inflate(R.layout.recycler_view, container, false);
         ButterKnife.bind(this, view);
 
         //verify type of device (returns true for a Tablet and false for a Handset)
@@ -121,9 +109,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
         if (bundle != null) {
             mSteps = bundle.getParcelableArrayList(EXTRA_STEPS);
             mIngredients = bundle.getParcelableArrayList(EXTRA_INGREDIENTS);
-            textViewServingsCount.setText(String.format("Servings %s",
-                    String.valueOf(bundle.getInt(SERVINGS))));
-            textViewDetailRecipeTitle.setText(String.format(bundle.getString(RECIPE_NAME)));
 
             //specifying an Adapter
             RecipeStepsAdapter adapter = new RecipeStepsAdapter(getActivity(),
@@ -157,38 +142,9 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
                 }
             }
         }
-        //button to launch IngredientsActivity
-        buttonLaunchIngredient.setOnClickListener(this);
-        //share button
-        buttonShare.setOnClickListener(this);
 
-        //return method(-> View)
         return view;
     }
-
-
-
-
-    //    @Override
-//    public void onResume() {
-//        super.onResume();
-//        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-//        if (N.getSLPreferences(getActivity(), "MST_KEY", 0) == 1) {
-//            if (isTablet) {
-//                if (getActivity().getResources().getConfiguration().orientation ==
-//                        Configuration.ORIENTATION_LANDSCAPE) {
-//
-//                    new Handler().postDelayed(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            recyclerView.findViewHolderForAdapterPosition(N.getSLPreferences(getActivity(), "CLICK_POSITION_KEY", 0)).itemView.performClick();
-//                        }
-//                    }, 10);
-//                }
-//            }
-//        }
-//    }
 
 
     private void executeIntent(int position) {
@@ -201,46 +157,47 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
         startActivity(intent);
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_ingredients_list_launcher:
-
-                //verify type of device (returns true for a Tablet and false for a Handset)
-                boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-                if (!isTablet) {
-                    Intent intent = IngredientsActivity.newIntent(getActivity(), mIngredients);
-                    startActivity(intent);
-                } else {
-                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                        Intent intent = IngredientsActivity.newIntent(getActivity(), mIngredients);
-                        startActivity(intent);
-                    } else {
-                        IngredientsFragment fragment = IngredientsFragment.newFragment(mIngredients);
-                        FragmentManager manager = getActivity().getSupportFragmentManager();
-                        manager.beginTransaction()
-                                .replace(R.id.frame_player_container, fragment)
-                                .addToBackStack(TAG_INGREDIENT)
-                                .commit();
-                    }
-                }
-
-                break;
-            case R.id.button_detail_share:
-
-                StringBuilder sb = new StringBuilder();
-                for (RecipesModel.Ingredients s : mIngredients) {
-                    String string = s.getIngredient();
-                    sb.append(string + "\n");
-                }
-
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, (Serializable) sb);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
-
-                break;
+//            case R.id.button_ingredients_list_launcher:
+//
+//                //verify type of device (returns true for a Tablet and false for a Handset)
+//                boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+//                if (!isTablet) {
+//                    Intent intent = IngredientsActivity.newIntent(getActivity(), mIngredients);
+//                    startActivity(intent);
+//                } else {
+//                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+//                        Intent intent = IngredientsActivity.newIntent(getActivity(), mIngredients);
+//                        startActivity(intent);
+//                    } else {
+//                        IngredientsFragment fragment = IngredientsFragment.newFragment(mIngredients);
+//                        FragmentManager manager = getActivity().getSupportFragmentManager();
+//                        manager.beginTransaction()
+//                                .replace(R.id.frame_player_container, fragment)
+//                                .addToBackStack(TAG_INGREDIENT)
+//                                .commit();
+//                    }
+//                }
+//
+//                break;
+//            case R.id.button_detail_share:
+//
+//                StringBuilder sb = new StringBuilder();
+//                for (RecipesModel.Ingredients s : mIngredients) {
+//                    String string = s.getIngredient();
+//                    sb.append(string + "\n");
+//                }
+//
+//                Intent sendIntent = new Intent();
+//                sendIntent.setAction(Intent.ACTION_SEND);
+//                sendIntent.putExtra(Intent.EXTRA_TEXT, (Serializable) sb);
+//                sendIntent.setType("text/plain");
+//                startActivity(sendIntent);
+//
+//                break;
         }
     }
 
@@ -265,7 +222,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, R
             manager.beginTransaction()
                     .replace(R.id.frame_player_container, playerFragment, "TAG_PLAYER")
                     .commit();
-
         }
     }
 }

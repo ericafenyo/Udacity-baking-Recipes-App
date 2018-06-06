@@ -28,5 +28,7 @@
     <string name="retry_button_text">Retry</string>
     <string name="clear_all_button_text">Clear All</string>
     <string name="menu_shopping_list_text">Shopping List</string>
+    <string name="lable_ingredients">Ingredients</string>
+    <string name="lable_directions">Directions</string>
 
 </resources>

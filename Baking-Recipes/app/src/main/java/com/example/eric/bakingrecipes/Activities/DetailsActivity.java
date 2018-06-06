@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -27,11 +28,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.eric.bakingrecipes.Fragments.DetailsFragment;
+import com.example.eric.bakingrecipes.Fragments.DirectionFragment;
 import com.example.eric.bakingrecipes.R;
 import com.example.eric.bakingrecipes.Utils.Data.RecipesModel;
 import com.example.eric.bakingrecipes.Utils.N;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
 
 
 public class DetailsActivity extends AppCompatActivity {
@@ -46,7 +50,7 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         //sets toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar_detail);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }

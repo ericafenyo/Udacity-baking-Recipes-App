@@ -54,15 +54,11 @@ import static com.example.eric.bakingrecipes.Utils.Data.ShoppingListContract.Sho
 public class IngredientsFragment extends Fragment implements IngredientsAdapter.onItemSelectListener {
 
     private static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
-    private static final String MST_KEY = "MST_KEY";
 
     private IngredientsAdapter mAdapter;
     private List<RecipesModel.Ingredients> mIngredients = new ArrayList<>();
 
-    @BindView(R.id.recycler_view_ingredients)
-    RecyclerView recyclerView;
-    @BindView(R.id.text_view_ingredients_details_info)
-    TextView textIngredientInfo;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     /**
      * @param ingredientsData list of recipe ingredients
@@ -83,7 +79,7 @@ public class IngredientsFragment extends Fragment implements IngredientsAdapter.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frament_ingredients_list, container, false);
+        View view = inflater.inflate(R.layout.recycler_view, container, false);
         ButterKnife.bind(this, view);
 
         Bundle bundle;
@@ -96,7 +92,6 @@ public class IngredientsFragment extends Fragment implements IngredientsAdapter.
         if (bundle != null) {
             mIngredients = bundle.getParcelableArrayList(EXTRA_INGREDIENTS);
             assert mIngredients != null;
-            textIngredientInfo.setText(String.format("Number of Items: %s", String.valueOf(mIngredients.size())));
 
             //specifying an Adapter and LayoutManager
             mAdapter = new IngredientsAdapter(getActivity(), mIngredients, this);
